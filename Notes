@@ -1,0 +1,31 @@
+-------------------------------------------------------------------
+Add profile page
+-------------------------------------------------------------------
+name (done)
+Instructions (done)
+cost per kilo (done)
+cost per pound (done)
+Add a show page (done)
+Compare Two Products (done)
+Wheatgrass Seeds Needed (done)
+make item elements required (done)
+Add delete for an ingredient (done)
+handel errors in add ingredient form (done)
+do the sign up page as the login page (done)
+Need to add overall weight to the item (done)
+Form to calcaualte for some Final weight (done)
+each item must have an array of ingredients (done)
+Error handeling (Server Side + Client side) (done)
+login and signup page client side validation (done)
+associate each item and ingredient with a user(done)
+Joi validator for calcaualted Quantities form (done)
+needs to handel ingredients errors with joi!!!!  (done)
+Add footer Copy right made by Abdelrahman Alnajjar (done)
+use session to save user preference about dark mode (done)
+edit weight to be final weight (add item / edit item) (done)
+add link to each ingredient in the show page of each item (dobe)
+Move all Javascript logic and calcaualtions to a Javascripts file (done)
+have a button that will calcaualte all items at once and store the result in item.costm, update costs(done)
+
+
+

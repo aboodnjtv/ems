@@ -1,0 +1,105 @@
+<% layout("layouts/boilerplate")%>
+
+
+<h2>Add a new Expense</h2>
+<form class="inlineForm" action="/expenses/add" method="POST">
+
+  <label for="name">Name</label>
+  <input name="name" id="name" type="text">
+
+  <label for="type">Type</label>
+  <!-- <input id="type" name="type" type="text"> -->
+  <select name="type" id="type">
+    <!-- default expense types -->
+    <option value="GROCERY">GROCERY</option>
+    <option value="GAS">GAS</option>
+    <option value="RENT">RENT</option>
+    <!-- user-defined expense types -->
+    <% for(const expenseType of expenseTypes){%>
+      <option value="<%=expenseType.type%>"><%=expenseType.type%></option>
+    <% } %>
+
+
+  </select>
+
+  <label for="cost">Cost ($)</label>
+  <input name="cost" id="cost" type="number"  min="0" value="0" step="any">
+
+  <button type="submit" class="btn btn-primary mb-2">Add Expense</button>
+
+</form>
+
+
+
+
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Number</th>
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">Date</th>
+        <th scope="col">Cost ($)</th>
+        <th scope="col">
+          <form action="/expenses/delete" method="POST">
+            <button class="btn btn-danger">Delete all Expenses</button>
+          </form>
+        </th>
+        
+        
+      </tr>
+    </thead>
+    <tbody>
+        <% let idx = 1 %>
+        <% for(let expense of expenses){ %>
+            <tr>
+                <th scope="row"><%=idx%></th>
+                <td><%=expense.name %></td>
+                <td><%=expense.type%></td>
+                <td><%=expense.date.getMonth()+1%>-<%=expense.date.getDate()%>-<%=expense.date.getFullYear()%></td>
+                <td><%=expense.cost%></td>
+                <td> 
+                  <form action="/expenses/deleteExpense/<%=expense._id%>" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                  </form>
+                </td>
+            </tr>
+            <% idx++ %>
+        <% } %>
+    </tbody>
+  </table>
+
+
+
+  <h2>This Month's Report</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Number</th>
+        <th scope="col">Expense Type</th>
+        <th scope="col">Total Spending</th>
+        <th scope="col">Percentage</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% idx = 1 %>
+        <% for(let reportEle of report){ %>
+            <tr>
+                <th scope="row"><%=idx%></th>
+                <td><%=reportEle.type %></td>
+                <td><%=reportEle.total%></td>
+                <td><%=reportEle.percentage%>%</td>
+            </tr>
+            <% idx++ %>
+        <% } %>
+        <th scope="row">/</th>
+        <td>Total Spending</td>
+        <td><%=totalCosts%></td>
+        <td>100%</td>
+
+    </tbody>
+  </table>
+
+

@@ -1,0 +1,25 @@
+<% layout("layouts/boilerplate")%>
+
+<h1 class="text-center mb-5 mt-3">All Ingredients</h1>
+<div class="row mx-auto">
+  <% for(let ingredient of allIngredients) {%>
+  <div class="col-sm-2 mb-5">
+    <div class="card dark_mode_black dark_mode_roundness_index" style="width: 300px">
+      <img
+        src="<%=ingredient.image %>  "
+        alt="ingredient Image"
+        style="width: 298px; height: 300px; object-fit: cover"
+        class="dark_mode_roundness_index"
+      />
+      <div class="card-body dark_mode_black">
+        <h5 class="card-title">
+          <a href="ingredients/<%=ingredient._id %> "><%=ingredient.name %></a>
+        </h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item dark_mode_black">Cost/lb: $<%=ingredient.cost %></li>
+      </ul>
+    </div>
+  </div>
+  <% } %>
+</div>

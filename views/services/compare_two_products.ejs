@@ -1,0 +1,86 @@
+<% layout("layouts/boilerplate")%>
+
+<div class="d-flex justify-content-center mt-5 text-center">
+    <div class="col-sm-2 mb-5" style="width: 850px;">
+        <div class="card dark_mode_black dark_mode_roundness_index">
+            <div class="d-flex">
+                <img src="https://images.unsplash.com/photo-1626094309830-abbb0c99da4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80" class="card-img-top dark_mode_roundness_index" style="width: 398px; height: 398px;object-fit: cover">
+                <div style="width: 50px;"></div>
+                <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=759&q=80" class="card-img-top dark_mode_roundness_index" style="width: 398px; height: 398px;object-fit: cover">
+            </div>
+            <div class="card-body">
+                <h4 class="text-center">Which Product is More Expensive</h4>
+        
+                <form id="comparison-form" class="needs-validation text-center" novalidate>
+                    <p>To find which product is more expensive, add each product's cost and weight</p>
+                    
+                    <!-- ---------------------- form inputs START -->
+                    <div class="d-flex justify-content-around">
+                    
+                        <div class="first_product">
+                            <h5 class="mb-3 mt-5">First Product</h5>
+                            <div class="mb-3">
+                                <label for="first_cost" class="form-label">Cost (USD)</label>
+                                <input type="text" class="form-control" id="first_cost" name="first_cost" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="first_weight" class="form-label">Weight (Grams)</label>
+                                <input type="text" class="form-control" id="first_weight" name="first_weight" required>
+                            </div>
+                        </div>
+
+                        <div class="second_product">
+                            <h5 class="mb-3 mt-5">Second Product</h5>
+                            <div class="mb-3">
+                                <label for="second_cost" class="form-label">Cost (USD)</label>
+                                <input type="text" class="form-control" id="second_cost" name="second_cost" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="second_weight" class="form-label">Weight (Grams)</label>
+                                <input type="text" class="form-control" id="second_weight" name="second_weight" required>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ---------------------- form inputs END -->
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-info" style="color: white;">Compare Products</button>
+                    </div>
+                    
+                </form>
+                
+                <h5 id="results"></h5>
+
+                <table id="table" class="table table-striped dark_mode_table invisible">
+                    <thead>
+                      <tr>
+                        <th scope="col">First Product Cost/KG</th>
+                        <th scope="col">Second Product Cost/KG</th>
+                        <th scope="col">First Product Cost/LB</th>
+                        <th scope="col">SecondProduct Cost/LB</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td id="cost_per_kg_1"></td>
+                        <td id="cost_per_kg_2"></td>
+                        <td id="cost_per_lb_1"></td>
+                        <td id="cost_per_lb_2"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                <h5 id="comparison"></h5>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/javascripts/compare_two_products.js"></script>

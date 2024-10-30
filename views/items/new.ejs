@@ -1,0 +1,64 @@
+<% layout("layouts/boilerplate")%>
+<h1 class="text-center mt-5 mb-5">Add new Item</h1>
+
+<form action="/items" method="POST" class="needs-validation" novalidate>
+  <div class="row justify-content-center">
+    <div class="col-sm-3 mb-5">
+      <!-- Item Name -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Item Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Item Name"
+          required
+        />
+      </div>
+      <!-- Image Link -->
+      <div class="mb-3">
+        <label for="image" class="form-label"
+          >Image Link (Must be from
+          <a href="https://unsplash.com/">Unsplash</a> )</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="image"
+          name="image"
+          placeholder="Add image Link"
+          required
+        />
+      </div>
+    
+      <!-- weight (USD) -->
+      <div class="mb-3">
+        <label for="weight" class="form-label">Final Weight (Grams)</label>
+        <input
+          type="text"
+          class="form-control"
+          id="weight"
+          name="weight"
+          placeholder="0.0 grams"
+          required
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="description"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-success">Add Item</button>
+      </div>
+    </div>
+  </div>
+</form>

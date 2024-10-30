@@ -1,0 +1,32 @@
+<% layout("layouts/boilerplate")%>
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-sm-2 mb-5" style="width: 400px;">
+        <div class="card dark_mode_black dark_mode_roundness_index">
+            <img src="https://images.unsplash.com/photo-1607718037487-5625a5ff5abf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" class="card-img-top dark_mode_roundness_index" style="width: 398px; height: 398px;object-fit: cover">
+            <div class="card-body">
+                <h4>Wheatgrass Seeds Needed</h4>
+        
+                <form id="wheatgrass_form" class="needs-validation" novalidate>
+                    <p>Enter the area of a plate in which you want to plant the wheatgrass in</p>
+                    <div class="mb-3">
+                        <label for="area" class="form-label">Area (cm<sup>2</sup>)</label>
+                        <input type="text" class="form-control" id="area" name="area" required>
+                    </div>
+
+                    <h5 id="weight"></h5>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success">Find Seeds Quantity</button>
+                    </div>
+                    
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/javascripts/wheatgrass_seeds_needed.js"></script>

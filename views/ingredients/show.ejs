@@ -1,0 +1,25 @@
+<% layout("layouts/boilerplate")%>
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-sm-2 mb-5">
+      <h1>Author is: <%=ingredient.author.name%> </h1>
+      <div class="card dark_mode_black dark_mode_roundness_index">
+        <img src="<%=ingredient.image%>" class="card-img-top dark_mode_roundness_index">
+        <div class="card-body">
+          <h5 class="card-title"><%=ingredient.name%></h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item dark_mode_black">Cost/lb: $<%=ingredient.cost %></li>
+        </ul>
+        <div class="card-body">
+          <form action="/ingredients/<%=ingredient._id %>?_method=DELETE" method="POST" style="display:inline-block;">
+              <button class="btn btn-outline-danger btn-sm">Delete Ingredient</button>
+          </form>
+          <a href="/ingredients/<%=ingredient._id %>/edit" class="card-link link-info">Edit Ingredient</a>
+        </div>
+      </div>
+    </div>
+</div>
+  
+
+
+

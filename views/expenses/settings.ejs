@@ -1,0 +1,122 @@
+<% layout("layouts/boilerplate")%>
+
+<h1>Expenses Settings page</h1>
+<h2>add your own expense types</h2>
+<form class="inlineForm" action="/expenses/settings/addtype" method="POST">
+
+    <label for="typeName">Type Name</label>
+    <input name="typeName" id="typeName" type="text">
+  
+    <button type="submit" class="btn btn-primary mb-2">Add Type Name</button>
+  
+  </form>
+
+
+  <% let number = 1; %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Number</th>
+        <th scope="col">Type Name</th>
+        <th scope="col">
+          <form action="/expensesSettings/delete-all-expense-types" method="POST">
+            <button class="btn btn-danger">Delete all types</button>
+          </form>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"><%=number++%></th>
+        <td>GROCERY</td>
+        <td>Default Type</td>
+      </tr>
+      <tr>
+        <th scope="row"><%=number++%></th>
+        <td>GAS</td>
+        <td>Default Type</td>
+      </tr>
+      <tr>
+        <th scope="row"><%=number++%></th>
+        <td>RENT</td>
+        <td>Default Type</td>
+
+      </tr>
+
+      <% for(let expenseType of expenseTypes){ %>
+        <tr>
+          <th scope="row"><%=number++%></th>
+          <td><%=expenseType.type%></td>
+          <td>
+            <form action="/expensesSettings/delete-expense-type/<%=expenseType._id %>" method="POST">
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <%} %>
+
+    </tbody>
+  </table>
+  
+
+
+  <h2>Add a new Monthly Expense</h2>
+  <form class="inlineForm" action="/expensesSettings/add-monthly-expense" method="POST">
+  
+    <label for="name">Name</label>
+    <input name="name" id="name" type="text">
+  
+    <label for="type">Type</label>
+    <!-- <input id="type" name="type" type="text"> -->
+    <select name="type" id="type">
+      <!-- default expense types -->
+      <option value="GROCERY">GROCERY</option>
+      <option value="GAS">GAS</option>
+      <option value="RENT">RENT</option>
+      <!-- user-defined expense types -->
+      <% for(const expenseType of expenseTypes){%>
+        <option value="<%=expenseType.type%>"><%=expenseType.type%></option>
+      <% } %>
+  
+  
+    </select>
+  
+    <label for="cost">Cost ($)</label>
+    <input name="cost" id="cost" type="number"  min="0" value="0" step="any">
+  
+    <button type="submit" class="btn btn-primary mb-2">Add Expense</button>
+  
+  </form>
+
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Number</th>
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">Date Added</th>
+        <th scope="col">Cost ($)</th>
+        <th scope="col">Delete Option</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+        <% let idx = 1 %>
+        <% for(let monthlyExpense of monthlyExpenses){ %>
+            <tr>
+                <th scope="row"><%=idx%></th>
+                <td><%=monthlyExpense.name %></td>
+                <td><%=monthlyExpense.type%></td>
+                <td><%=monthlyExpense.date.getMonth()+1%>-<%=monthlyExpense.date.getDate()%>-<%=monthlyExpense.date.getFullYear()%></td>
+                <td><%=monthlyExpense.cost%></td>
+                <td> 
+                  <form action="/expensesSettings/delete-monthly-expense/<%=monthlyExpense._id%>" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                  </form>
+                </td>
+            </tr>
+            <% idx++ %>
+        <% } %>
+    </tbody>
+  </table>

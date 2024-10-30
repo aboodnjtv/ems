@@ -1,0 +1,20 @@
+<% layout("layouts/boilerplate")%>
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-sm-2 mb-5" style="width: 600px;">
+        <div class="card dark_mode_black dark_mode_roundness_index">
+            <img src="https://images.unsplash.com/photo-1570451488142-71d08e1511e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" class="card-img-top dark_mode_roundness_index" style="width: 598px; height: 398px;object-fit: cover">
+            <div class="card-body">
+                <h4>Name: <%=user.name%></h4>
+                <h4>----</h4>
+                <h4>Email: <%=user.email%></h4>
+                <h4>----</h4>
+                <h4>Dates: (Month-Day-Year)</h4>
+                <h4>Date Joined: <%=user.date_joined.getMonth()+1%>-<%=user.date_joined.getDate()%>-<%=user.date_joined.getFullYear()%></h4>
+                <h4>Last Login: <%=user.last_login.getMonth()+1%>-<%=user.last_login.getDate()%>-<%=user.last_login.getFullYear()%></h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/javascripts/cost_per_pound.js"></script>

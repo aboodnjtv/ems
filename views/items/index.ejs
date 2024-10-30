@@ -1,0 +1,33 @@
+<% layout("layouts/boilerplate")%>
+
+<h1 class="text-center mb-5 mt-3">All Items</h1>
+<div class="row mx-auto">
+  <% for(let item of allItems) {%>
+  <div class="col-sm-3 mb-5">
+    <div class="card dark_mode_black dark_mode_roundness_index" style="width: 400px">
+      <img
+        src="<%=item.image%>"
+        alt="Item Image"
+        style="width: 398px; height: 400px; object-fit: cover"
+        class="dark_mode_roundness_index"
+      />
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="items/<%=item._id %>"><%=item.name %></a>
+        </h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item dark_mode_black">
+          Cost (KG) $<%=algorithms.itemCostInKG(item.cost,item.weight) %>
+        </li>
+        <li class="list-group-item dark_mode_black">
+          Cost (LB) $<%=algorithms.itemCostInLB(item.cost,item.weight) %>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+
+

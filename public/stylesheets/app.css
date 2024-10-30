@@ -1,0 +1,102 @@
+
+/* ------------------- Dark mode */
+.add_grey{
+    transition: all 1s;
+    background-color: rgb(62, 62, 62);
+    color: rgb(255, 255, 255);
+
+}
+.add_black{
+    transition: all 1s;
+    color: rgb(255, 255, 255);
+    background-color: rgb(36, 36, 36);
+}
+
+.add_white{
+    transition: all 1s;
+    color: rgb(255, 255, 255);
+}
+
+.add_roundness_right_index{
+    transition: 1s;
+    border-top-right-radius: 30%;
+}
+.add_roundness_show{
+    transition: 1s;
+    border-radius: 30%;
+}
+
+/* instant */
+/* without transition */
+
+.add_grey_instant{
+    background-color: rgb(62, 62, 62);
+    color: rgb(255, 255, 255);
+
+}
+.add_black_instant{
+    color: rgb(255, 255, 255);
+    background-color: rgb(36, 36, 36);
+}
+
+.add_white_instant{
+    color: rgb(255, 255, 255);
+}
+
+.add_roundness_right_index_instant{
+    border-top-right-radius: 30%;
+}
+.add_roundness_show_instant{
+    border-radius: 30%;
+}
+
+.remove_roundness_show_instant{
+    transition: 1s;
+    border-radius: 0%;
+}
+
+
+/* ///// */
+.remove_grey{
+    transition: all 1s;
+    color: rgb(0, 0, 0);
+
+}
+.remove_black{
+    transition: all 1s;
+    color: rgb(20, 13, 13);
+    background-color: rgb(255, 255, 255);
+}
+
+.remove_white{
+    transition: all 1s;
+    color: rgb(0, 0, 0);
+}
+
+.remove_roundness_right_index{
+    transition: 1s;
+    border-top-right-radius: 0%;
+}
+.remove_roundness_show{
+    transition: 1s;
+    border-radius: 0%;
+}
+
+/* ///// */
+
+
+
+/* ------------------- for dark mode */
+
+
+.inlineForm{
+    display: flex;
+    width: 1000px;
+    justify-content: space-around;
+    padding: 10px 10px 10px 10px;
+    border-radius: 15px;
+    background-color: rgba(81, 99, 82, 0.275);
+    
+}
+
+

@@ -1,0 +1,44 @@
+<% layout("layouts/boilerplate")%>
+
+
+<div class="container d-flex flex-column align-items-center mt-5" style="width: 70%;">
+    <!-------------------------ingredients Table-->
+    <table class="table table-striped mt-3 dark_mode_table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity (Grams)</th>
+            <th scope="col">Cost (USD)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% calculated_cost = 0%> 
+        <% for(let ingredient of item.ingredients){ %>
+            <tr>
+                <td><a class="link-success" href="/ingredients/<%=ingredient.id._id%>"><%=ingredient.id.name%></a></td>
+                <% calculated_quantity =final_wieght/item.weight*ingredient.quantity%> 
+                <% calculated_cost+=calculated_quantity *ingredient.id.cost /1000 %>
+                <td><%=calculated_quantity.toFixed(0)%> g</td>
+                <td>$<%=(ingredient.id.cost*calculated_quantity/1000).toFixed(2) %></td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+
+    <!-------------------------Results table-->
+    <table class="table table-striped mt-5 dark_mode_table">
+        <thead>
+        <tr>
+            <th scope="col">Final Weight (Grams)</th>
+            <th scope="col">Cost (USD)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><%=final_wieght%>g</td>
+            <td>$<%=calculated_cost.toFixed(2)%></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

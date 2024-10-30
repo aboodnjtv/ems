@@ -1,0 +1,212 @@
+<% layout("layouts/boilerplate")%>
+<div class="card mb-3 dark_mode_grey" style="width: 100%">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="<%=item.image%> " class="img-fluid rounded-start dark_mode_image dark_mode_roundness_show" alt="" />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <!-- name -->
+        <h1 class="display-5"><%=item.name %></h1>
+
+        <a href="/items/<%=item._id %>/edit" class="card-link link-info"
+          >Edit Item</a
+        >
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item dark_mode_grey"></li>
+          <li class="list-group-item dark_mode_grey"></li>
+        </ul>
+
+        <!-- ingredients -->
+        <h5 class="card-title">Ingredients & Recipe</h5>
+
+        <div class="d-flex justify-content-evenly">
+          <!-- -------------Form to add new ingredient ----------------- -->
+          <form
+            action="/items/<%=item._id%>/add-ingredient"
+            method="POST"
+            class="mb-3 mt-3 row gy-2 gx-3 align-items-center needs-validation"
+            novalidate
+          >
+            <!-- Select ingredient  -->
+            <div class="col-auto">
+              <label class="visually-hidden" for="ingredient_id"
+                >ingredient_id</label
+              >
+              <select
+                class="form-select dark_mode_black"
+                name="ingredient_id"
+                id="ingredient_id"
+              >
+                <% for(let ingredient of allIngredients){ %>
+                <!-- simple logic to now show ingredients that are already added (based on name) -->
+                  <% if(!item.ingredients.filter(e => e.id.name==ingredient.name).length > 0){%>
+                      <option value="<%=ingredient._id%>">
+                        <%=ingredient.name %>
+                      </option>
+                    <%}%> 
+                  <%}%>
+              </select>
+            </div>
+
+            <!-- specify quantity -->
+            <div class="col-auto">
+              <label class="visually-hidden" for="quantity">Quantity</label>
+              <input
+                type="text"
+                class="form-control dark_mode_black"
+                id="quantity"
+                placeholder="Specify Quantity (Grams)"
+                name="quantity"
+                required
+              />
+            </div>
+
+            <div class="col-auto">
+              <button class="btn btn-primary">Add Ingredient</button>
+            </div>
+          </form>
+
+          <!-- -------------Form to add show ingredient quantities based on specified weight ----------------- -->
+          <form
+            action="/items/<%=item._id%>/calculate_quantities"
+            method="POST"
+            class="mb-3 mt-3 row gy-2 gx-3 align-items-center needs-validation"
+            novalidate
+          >
+            <!-- specify weight -->
+            <div class="col-auto">
+              <label class="visually-hidden" for="final_wieght">Final Weight</label>
+              <input
+                type="text"
+                class="form-control dark_mode_black"
+                placeholder="Final Weight (Grams)"
+                name="final_wieght"
+                required
+              />
+            </div>
+
+            <div class="col-auto">
+              <button class="btn btn-primary">
+                Find Ingredients' quantities
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!---------------------------------->
+
+        <!--------------------- ingredients table ------------------------------->
+
+        <!-- ingredients_weight is the total weight of all ingredients added  -->
+        <table class="table table-striped mt-3 dark_mode_table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Quantity (Grams)</th>
+              <th scope="col">Cost (USD)</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(let ingredient of item.ingredients){ %>
+
+            <tr>
+              <td>
+                <a
+                  class="link-success"
+                  href="/ingredients/<%=ingredient.id._id%>"
+                  ><%=ingredient.id.name%></a
+                >
+              </td>
+              <td><%=ingredient.quantity.toFixed(0)%> g</td>
+              <td>$<%=(ingredient.id.cost*ingredient.quantity/1000).toFixed(2) %></td>
+              <td>
+                <!-- delete ingredient form -->
+                <form
+                  style="display: inline"
+                  action="/items/<%=item._id%>/<%=ingredient.id._id%>?_method=DELETE"
+                  method="POST"
+                >
+                  <button class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+        <!--------------------- ingredients ends ------------------------------->
+
+        <!--------------------- Results table ------------------------------->
+        <table class="table table-striped mt-5 dark_mode_table">
+          <thead>
+            <tr>
+              <th scope="col">Final Weight (Grams)</th>
+              <th scope="col">Total Weight (Grams)</th>
+              <th scope="col">Cost (USD)</th>
+              <th scope="col">Cost/KG (USD)</th>
+              <th scope="col">Cost/LB (USD)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><%=item.weight%>g</td>
+              <td><%=algorithms.calculateItemWeight(item.ingredients)%>g</td>
+              <% item.cost = algorithms.calculateItemCost(item.ingredients) %> 
+              <td>$<%=item.cost.toFixed(2)%></td>
+              <td>$<%=algorithms.itemCostInKG(item.cost,item.weight)%></td>
+              <td>$<%=algorithms.itemCostInLB(item.cost,item.weight) %></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <!--------------------- Results table ends------------------------------->
+
+        <div class="card text-dark bg-light mb-3 mt-5">
+          <div class="card-header dark_mode_black">weights?</div>
+          <div class="card-body text-dark dark_mode_black">
+            <p class="card-text dark_mode_white">
+              <b>Final Weight</b> is the weight of the item when it is 100%
+              ready (final product )
+            </p>
+            <p class="card-text dark_mode_white">
+              <b>Total Weight</b> is the total weight of all ingredients added
+              in the process of making the item
+            </p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="card text-dark bg-light mb-3 mt-5">
+          <div class="card-header dark_mode_black">Description</div>
+          <div class="card-body dark_mode_black">
+            <h5 class="card-title">Items Description</h5>
+            <p class="card-text"><%=item.description %></p>
+          </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item dark_mode_grey"></li>
+          <li class="list-group-item dark_mode_grey"></li>
+        </ul>
+
+        <!-- lastUpdate -->
+        <small class="text-muted">Last updated: <%=item.lastUpdate %> </small>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item dark_mode_grey"></li>
+          <li class="list-group-item dark_mode_grey"></li>
+        </ul>
+
+        <!-- Delete Item -->
+        <div class="card-body">
+          <form action="/items/<%=item._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete Item</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ 

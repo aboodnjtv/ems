@@ -1,0 +1,52 @@
+<% layout("layouts/boilerplate")%>
+<h1 class="text-center mt-5 mb-5">Add new Ingredient</h1>
+
+<form action="/ingredients" method="POST" class="needs-validation" novalidate>
+  <div class="row justify-content-center">
+    <div class="col-sm-3 mb-5">
+      <!-- Ingredient Name -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Ingredient Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Ingredient Name"
+          required
+        />
+      </div>
+      <!-- Image Link -->
+      <div class="mb-3">
+        <label for="image" class="form-label"
+          >Image Link (Must be from
+          <a href="https://unsplash.com/">Unsplash</a> )</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="image"
+          name="image"
+          placeholder="Add image Link"
+          required
+        />
+      </div>
+      <!-- Cost Per Pound (USD) -->
+      <div class="mb-3">
+        <label for="price" class="form-label">Cost/lb (USD)</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cost"
+          name="cost"
+          placeholder="$0.00"
+          required
+        />
+      </div>
+
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-success">Add Ingredient</button>
+      </div>
+    </div>
+  </div>
+</form>
