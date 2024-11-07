@@ -50,12 +50,25 @@ router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
 
 // add expense
 router.post("/expenses/add",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
-    const {name,type,cost} = req.body;
+    let {name,type,cost,date} = req.body;
+    
+    // if no date was given, then we use today's date
+    if(!date){
+        date = Date.now()
+    }else{
+        // construct the date from the given month and year
+        const dateAsArray = date.split("-");
+        const year = dateAsArray[0];
+        const month = dateAsArray[1];
+        date = new Date(`${year}-${month}-1`);
+    }
+
+
     const newExpense = new Expense({
         name,
         type,
         cost,
-        date:Date.now(),
+        date,
         author: req.session.user
     })
     await newExpense.save();
