@@ -91,20 +91,33 @@ router.post("/expenses/deleteExpense/:id",isLoggedIn,isVerified, catchAsync(asyn
 }));
 // delete all expenses
 router.post("/expenses/delete",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
+    
+    /*
+    we delete once save
+    we only delete the ones that are not named saved
+    The process,
+    get all expenses, and for each one, add it to the type it belongs it (and date)
+    after adding
+    delete all of the expenes that don't have the save as name
+    */
+
+    
+
+
     // delete all expenses
-    await Expense.deleteMany({author:req.session.user});
-    // now add all the monthly expenses (if any)
-    const monthlyExpenses = await MonthlyExpense.find({author:req.session.user});
-    for(let monthlyExpense of monthlyExpenses){
-        const newExpense = new Expense({
-            name:monthlyExpense.name,
-            type:monthlyExpense.type,
-            cost:monthlyExpense.cost,
-            date:Date.now(),
-            author:req.session.user
-        })
-        await newExpense.save();
-    }
+    // await Expense.deleteMany({author:req.session.user});
+    // // now add all the monthly expenses (if any)
+    // const monthlyExpenses = await MonthlyExpense.find({author:req.session.user});
+    // for(let monthlyExpense of monthlyExpenses){
+    //     const newExpense = new Expense({
+    //         name:monthlyExpense.name,
+    //         type:monthlyExpense.type,
+    //         cost:monthlyExpense.cost,
+    //         date:Date.now(),
+    //         author:req.session.user
+    //     })
+    //     await newExpense.save();
+    // }
 
     res.redirect("/expenses");
 
