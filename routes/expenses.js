@@ -12,8 +12,12 @@ const {catchAsync} = require("../utils/catchAsync");
 
 // expenses main page
 router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
-    const expenses = await Expense.find({author:req.session.user})
+    // 
+    const expenses = await Expense.find({author:req.session.user,name:{ $ne: "saved" }})
     const expenseTypes = await ExpenseType.find({author:req.session.user});
+
+    const savedExpenses = await Expense.find({author:req.session.user,name:"saved"});
+
     let totalCosts = 0;
     // to calculate the total spending
     for(expense of expenses){
@@ -45,13 +49,18 @@ router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
 
     // limit to 2 decimals
     totalCosts = totalCosts.toFixed(2);
-    res.render("./expenses",{expenses,expenseTypes,totalCosts,report});
+    res.render("./expenses",{expenses,expenseTypes,totalCosts,report,savedExpenses});
 }));
 
 // add expense
 router.post("/expenses/add",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     let {name,type,cost,date} = req.body;
-    
+
+    // simple way to make sure name is not empty or named "saved"
+    if(!name){
+        return res.redirect("/expenses");
+    }
+
     // if no date was given, then we use today's date
     if(!date){
         date = Date.now()
