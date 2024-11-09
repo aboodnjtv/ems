@@ -93,13 +93,58 @@ router.post("/expenses/deleteExpense/:id",isLoggedIn,isVerified, catchAsync(asyn
 router.post("/expenses/delete",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     
     /*
-    we delete once save
+    we delete once saved
     we only delete the ones that are not named saved
     The process,
-    get all expenses, and for each one, add it to the type it belongs it (and date)
-    after adding
-    delete all of the expenes that don't have the save as name
+    1) get all expenses
+    2) for each one, add it to the type it belongs it (and date)
+    3) delete all of the expenes that don't have the save as name
     */
+
+    const unsaved_expenses = await Expense.find({author:req.session.user, name:{$ne:"saved"}});
+
+    // using a Arraylist to reduce the number of calls to database
+    const list = [];
+
+    for(unsaved_expense of unsaved_expenses){
+        // if there exist the same type in database with the save month and year
+        // then update the value of that, 
+        // otherwise just add a new saved value to database
+        const month = unsaved_expense.date.getMonth() + 1; // add one to get the correct month
+        const year = unsaved_expense.date.getFullYear();
+        const type = unsaved_expense.type;
+        const cost = unsaved_expense.cost;
+        
+        /// TESTING ***********************
+        console.log(`month: ${month}, year ${year}, type: ${type}, cost: $${cost}`); 
+
+        let found = false; // used to determine if the expense with the same type, month, and year is found
+        for(const ele of list){
+            // if the same month and year
+            if(ele.type === type && ele.month === month && ele.year === year){
+                const newCost = ele.cost + cost;
+                ele.cost = newCost;
+                found = true;
+                break;
+            }
+        }
+        // if no expense with the same type, month and year is found, then we just add to the list
+        if(!found){
+            list.push({type,month,year,cost});  
+        }
+
+
+
+    }
+
+    //
+    
+    // now using the list, we make an api call for the database to add them and mark them as saved
+    
+    /// TESTING ***********************
+    console.log(list);
+
+    const saved_expenses = await Expense.find({author:req.session.user, name:"saved"});
 
     
 
