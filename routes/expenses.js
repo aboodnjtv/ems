@@ -140,12 +140,25 @@ router.post("/expenses/delete",isLoggedIn,isVerified,catchAsync(async(req,res)=>
     //
     
     // now using the list, we make an api call for the database to add them and mark them as saved
+
+    // for(const ele of lsit){
+    //     // if there exist a saved expense with the same type, month and year, then update it
+    //     // otherwise create a new one 
+    //     const saved_expense = await Expense.find({
+    //         author:req.session.user,
+    //         name:"saved",
+    //         type: ele.type,
+    //         date 
+    //     });
+
+    // }
+
     
     /// TESTING ***********************
     console.log(list);
 
-    const saved_expenses = await Expense.find({author:req.session.user, name:"saved"});
 
+    
     
 
 
