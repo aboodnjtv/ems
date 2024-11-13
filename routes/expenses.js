@@ -103,7 +103,7 @@ router.post("/expenses/deleteExpense/:id",isLoggedIn,isVerified, catchAsync(asyn
 
 
 // delete all expenses
-router.post("/expenses/delete",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
+router.post("/expenses/save-expenses",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     
     /*
     we delete once saved
@@ -155,22 +155,34 @@ router.post("/expenses/delete",isLoggedIn,isVerified,catchAsync(async(req,res)=>
 
     }
 
-    // // Move this to another route
-    // // now add all the monthly expenses (if any)
-    // const monthlyExpenses = await MonthlyExpense.find({author:req.session.user});
-    // for(let monthlyExpense of monthlyExpenses){
-    //     const newExpense = new Expense({
-    //         name:monthlyExpense.name,
-    //         type:monthlyExpense.type,
-    //         cost:monthlyExpense.cost,
-    //         date:Date.now(),
-    //         author:req.session.user
-    //     })
-    //     await newExpense.save();
-    // }
     res.redirect("/expenses");
 
 }));
+
+
+router.post("/expenses/import-monthly-expenses",async(req,res)=>{
+    
+    // now add all the monthly expenses (if any)
+    const monthlyExpenses = await MonthlyExpense.find({author:req.session.user});
+    const todaysDate = new Date();
+    const month = todaysDate.getMonth()+1;
+    const year = todaysDate.getFullYear();
+    for(let monthlyExpense of monthlyExpenses){
+        const newUnsavedExpense = new Expense({
+            name:monthlyExpense.name,
+            type:monthlyExpense.type,
+            cost:monthlyExpense.cost,
+            date:new Date(),
+            month,
+            year,
+            saved:false,
+            author:req.session.user
+        })
+        await newUnsavedExpense.save();
+    }
+
+    res.redirect("/expenses");
+})
 
 
 module.exports = router;

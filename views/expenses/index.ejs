@@ -46,11 +46,15 @@
         <th scope="col">Date</th>
         <th scope="col">Cost ($)</th>
         <th scope="col">
-          <form action="/expenses/delete" method="POST">
+          <form action="/expenses/save-expenses" method="POST">
             <button class="btn btn-success">Save Expenses</button>
           </form>
         </th>
-        
+        <th scope="col">
+          <form action="/expenses/import-monthly-expenses" method="POST">
+            <button class="btn btn-info">Import Monthly Expenses</button>
+          </form>
+        </th>
         
       </tr>
     </thead>
