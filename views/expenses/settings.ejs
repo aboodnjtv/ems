@@ -121,36 +121,3 @@
     </tbody>
   </table>
 
-
-  <h2>Add a new Expense, given a month and a year</h2>
-<form class="inlineForm" action="/expenses/add" method="POST">
-
-  <input name="name" id="name" type="hidden" value="saved">
-
-  <label for="type">Type</label>
-  <!-- <input id="type" name="type" type="text"> -->
-  <select name="type" id="type">
-    <!-- default expense types -->
-    <option value="GROCERY">GROCERY</option>
-    <option value="GAS">GAS</option>
-    <option value="RENT">RENT</option>
-    <!-- user-defined expense types -->
-    <% for(const expenseType of expenseTypes){%>
-      <option value="<%=expenseType.type%>"><%=expenseType.type%></option>
-    <% } %>
-
-
-  </select>
-
-  <label for="cost">Cost ($)</label>
-  <input name="cost" id="cost" type="number"  min="0" value="0" step="any">
-  
-  <label for="date">Month and Year</label>
-  <% const d = new Date(Date.now()); %>
-  <% const month = d.getMonth(); %>
-  <% const year = d.getFullYear(); %>
-  <input name="date" id="date" type="month" value="<%=year%>-<%=month+1%>">
-
-  <button type="submit" class="btn btn-primary mb-2">Add Expense</button>
-
-</form>

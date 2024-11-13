@@ -12,11 +12,18 @@ const {catchAsync} = require("../utils/catchAsync");
 
 // expenses main page
 router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
-    // 
-    const expenses = await Expense.find({author:req.session.user,name:{ $ne: "saved" }})
+    
+    //change to unsaved expenses
+    const expenses = await Expense.find({
+        author:req.session.user,
+        saved:false,
+    })
     const expenseTypes = await ExpenseType.find({author:req.session.user});
 
-    const savedExpenses = await Expense.find({author:req.session.user,name:"saved"});
+    const savedExpenses = await Expense.find({
+        author:req.session.user,
+        saved:true
+    });
 
     let totalCosts = 0;
     // to calculate the total spending
@@ -55,29 +62,33 @@ router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
 // add expense
 router.post("/expenses/add",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     let {name,type,cost,date} = req.body;
-
     // simple way to make sure name is not empty or named "saved"
     if(!name){
         return res.redirect("/expenses");
     }
-
-    // if no date was given, then we use today's date
+    let day;
     if(!date){
-        date = Date.now()
-    }else{
-        // construct the date from the given month and year
-        const dateAsArray = date.split("-");
-        const year = dateAsArray[0];
-        const month = dateAsArray[1];
-        date = new Date(`${year}-${month}-1`);
+        date = new Date();
+        day = date.getDate();
     }
+    else{
+        date = new Date(date);
+        day = date.getDate()+1; // because of the we get the date form html file, we need to add 1
+        //update the date with the corrected day
+        date = new Date(`${date.getFullYear()}, ${date.getMonth()+1}, ${day}`);
 
+    }
+    const month = date.getMonth()+1;  
+    const year = date.getFullYear();  
 
     const newExpense = new Expense({
         name,
         type,
         cost,
         date,
+        month,
+        year,
+        saved:false,
         author: req.session.user
     })
     await newExpense.save();
@@ -89,23 +100,74 @@ router.post("/expenses/deleteExpense/:id",isLoggedIn,isVerified, catchAsync(asyn
     await Expense.findByIdAndDelete(req.params.id);
     res.redirect("/expenses");
 }));
+
+
 // delete all expenses
 router.post("/expenses/delete",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
-    // delete all expenses
-    await Expense.deleteMany({author:req.session.user});
-    // now add all the monthly expenses (if any)
-    const monthlyExpenses = await MonthlyExpense.find({author:req.session.user});
-    for(let monthlyExpense of monthlyExpenses){
-        const newExpense = new Expense({
-            name:monthlyExpense.name,
-            type:monthlyExpense.type,
-            cost:monthlyExpense.cost,
-            date:Date.now(),
-            author:req.session.user
+    
+    /*
+    we delete once saved
+    we only delete the ones that are not named saved
+    The process,
+    1) get all expenses
+    2) for each one, add it to the type it belongs it (and date)
+    3) delete all of the expenes that don't have the save as name
+    */
+
+    const unsaved_expenses = await Expense.find({
+        author:req.session.user,
+        saved:false}
+    );
+
+    for(unsaved_expense of unsaved_expenses){
+        // if the type of the expense with the same month and year, then just update
+        // otherwise, create a new saved expense
+        const savedExpense = await Expense.findOne({
+            type : unsaved_expense.type,
+            month : unsaved_expense.month,
+            year : unsaved_expense.year,
+            saved: true,
+            author:unsaved_expense.author
+
         })
-        await newExpense.save();
+        if(savedExpense){
+            // the type of the expense was found with the same month and year
+            const updatedCost = savedExpense.cost + unsaved_expense.cost; 
+            await Expense.updateOne({_id:savedExpense._id},{
+                cost:updatedCost
+            })
+        }
+        else{
+            const newSavedExpense = new Expense({
+                name: "saved",
+                type : unsaved_expense.type,
+                cost : unsaved_expense.cost,
+                date : unsaved_expense.date,
+                month : unsaved_expense.month,
+                year : unsaved_expense.year,
+                saved: true,
+                author:unsaved_expense.author
+            });
+            await newSavedExpense.save();
+        }
+        //delete the unsaved expense after processing it
+        await Expense.deleteOne({_id:unsaved_expense._id});
+
     }
 
+    // // Move this to another route
+    // // now add all the monthly expenses (if any)
+    // const monthlyExpenses = await MonthlyExpense.find({author:req.session.user});
+    // for(let monthlyExpense of monthlyExpenses){
+    //     const newExpense = new Expense({
+    //         name:monthlyExpense.name,
+    //         type:monthlyExpense.type,
+    //         cost:monthlyExpense.cost,
+    //         date:Date.now(),
+    //         author:req.session.user
+    //     })
+    //     await newExpense.save();
+    // }
     res.redirect("/expenses");
 
 }));

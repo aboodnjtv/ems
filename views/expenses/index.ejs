@@ -25,6 +25,9 @@
   <label for="cost">Cost ($)</label>
   <input name="cost" id="cost" type="number"  min="0" value="0" step="any">
 
+  <label for="date">Date</label>
+  <input name="date" id="date" type="date">
+
   <button type="submit" class="btn btn-primary mb-2">Add Expense</button>
 
 </form>
@@ -44,7 +47,7 @@
         <th scope="col">Cost ($)</th>
         <th scope="col">
           <form action="/expenses/delete" method="POST">
-            <button class="btn btn-danger">Delete all Expenses</button>
+            <button class="btn btn-success">Save Expenses</button>
           </form>
         </th>
         
@@ -105,7 +108,7 @@
 
 <!-- TESTING ONLY START----------------------------------------------------- -->
 
-<h2>All Default expenses</h2>
+<h2>All Saved expenses</h2>
 
 <table class="table">
   <thead>
@@ -124,7 +127,7 @@
               <th scope="row"><%=idx%></th>
               <td><%=savedExpense.name %></td>
               <td><%=savedExpense.type%></td>
-              <td><%=savedExpense.date.getMonth()+1%>-<%=expense.date.getFullYear()%></td>
+              <td><%=savedExpense.date.getMonth()+1%>-<%=savedExpense.date.getFullYear()%></td>
               <td><%=savedExpense.cost%></td>
           </tr>
           <% idx++ %>

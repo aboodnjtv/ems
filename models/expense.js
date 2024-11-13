@@ -7,6 +7,9 @@ const expenseSchema = new Schema({
   type: String,
   cost: Number,
   date : Date,
+  month : String,
+  year : String,
+  saved: Boolean,
   author:{
     type: mongoose.Types.ObjectId,
     ref: "User",
