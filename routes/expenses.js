@@ -11,7 +11,7 @@ const {catchAsync} = require("../utils/catchAsync");
 
 
 // helper functions
-const {saveUnsavedExpenses} = require("../public/javascripts/expensesFuncs");
+const {saveUnsavedExpenses,import_monthly_expenses} = require("../public/javascripts/expensesFuncs");
 
 // expenses main page
 router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
@@ -113,26 +113,8 @@ router.post("/expenses/save-expenses",isLoggedIn,isVerified,catchAsync(async(req
 
 
 router.post("/expenses/import-monthly-expenses",async(req,res)=>{
-    
     // now add all the monthly expenses (if any)
-    const monthlyExpenses = await MonthlyExpense.find({author:req.session.user});
-    const todaysDate = new Date();
-    const month = todaysDate.getMonth()+1;
-    const year = todaysDate.getFullYear();
-    for(let monthlyExpense of monthlyExpenses){
-        const newUnsavedExpense = new Expense({
-            name:monthlyExpense.name,
-            type:monthlyExpense.type,
-            cost:monthlyExpense.cost,
-            date:new Date(),
-            month,
-            year,
-            saved:false,
-            author:req.session.user
-        })
-        await newUnsavedExpense.save();
-    }
-
+    await import_monthly_expenses(req.session.user);
     res.redirect("/expenses");
 })
 

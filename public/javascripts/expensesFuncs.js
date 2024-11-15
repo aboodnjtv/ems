@@ -3,9 +3,9 @@ const Expense = require("../../models/expense");
 // helper functions
 
 //returns all unsaved expenses
-async function get_unsaved_expenses(userID){
+async function get_unsaved_expenses(userId){
     return await Expense.find({
-        author:userID,
+        author:userId,
         saved:false}
     );
 }
@@ -48,12 +48,14 @@ async function update_saved_expense_cost(savedExpense,unsaved_expense){
 
 /////////////////////////////////////////////////////
 // Exported functions
-module.exports.saveUnsavedExpenses = async function (userID) {
+
+//takes all the unsaved expenses and save them
+module.exports.saveUnsavedExpenses = async function (userId) {
     // for each unsaved expense, check if the type with the same month
     // and year are already avaialbe, then add to the cost,
     // otherwise, create a new expense and mark it as saved
     // at the end, delete the unsaved expense after it was saved
-    const unsaved_expenses = await get_unsaved_expenses(userID);
+    const unsaved_expenses = await get_unsaved_expenses(userId);
     for(unsaved_expense of unsaved_expenses){
         const savedExpense = await find_saved_expense_with_same_type_month_and_year(unsaved_expense);
         if(savedExpense)
@@ -64,4 +66,25 @@ module.exports.saveUnsavedExpenses = async function (userID) {
         await Expense.deleteOne({_id:unsaved_expense._id});
     }
   };
-  
+
+
+//retrieve the monthly expenses and add them to the unsaved expenses 
+module.exports.import_monthly_expenses = async function (userId) {
+    const monthlyExpenses = await MonthlyExpense.find({author:userId});
+    const todaysDate = new Date();
+    const month = todaysDate.getMonth()+1;
+    const year = todaysDate.getFullYear();
+    for(let monthlyExpense of monthlyExpenses){
+        const newUnsavedExpense = new Expense({
+            name:monthlyExpense.name,
+            type:monthlyExpense.type,
+            cost:monthlyExpense.cost,
+            date:new Date(),
+            month,
+            year,
+            saved:false,
+            author:req.session.user
+        })
+        await newUnsavedExpense.save();
+    }
+};
