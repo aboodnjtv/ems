@@ -97,7 +97,6 @@ module.exports.import_monthly_expenses = async function (userId) {
     const todaysDate = new Date();
     const month = todaysDate.getMonth()+1;
     const year = todaysDate.getFullYear();
-
     // for each monthly expense, make a new unsaved expense using today's date
     for(let monthlyExpense of monthlyExpenses)
         await create_new_unsaved_expense_from_monthly_expense(monthlyExpense,month,year);
