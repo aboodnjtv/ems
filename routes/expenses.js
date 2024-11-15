@@ -10,6 +10,9 @@ const {isLoggedIn,isVerified} = require("../utils/middleware");
 const {catchAsync} = require("../utils/catchAsync");
 
 
+// helper functions
+const {saveUnsavedExpenses} = require("../public/javascripts/expensesFuncs");
+
 // expenses main page
 router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
     
@@ -102,61 +105,10 @@ router.post("/expenses/deleteExpense/:id",isLoggedIn,isVerified, catchAsync(asyn
 }));
 
 
-// delete all expenses
+// save unsaved expenses
 router.post("/expenses/save-expenses",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
-    
-    /*
-    we delete once saved
-    we only delete the ones that are not named saved
-    The process,
-    1) get all expenses
-    2) for each one, add it to the type it belongs it (and date)
-    3) delete all of the expenes that don't have the save as name
-    */
-
-    const unsaved_expenses = await Expense.find({
-        author:req.session.user,
-        saved:false}
-    );
-
-    for(unsaved_expense of unsaved_expenses){
-        // if the type of the expense with the same month and year, then just update
-        // otherwise, create a new saved expense
-        const savedExpense = await Expense.findOne({
-            type : unsaved_expense.type,
-            month : unsaved_expense.month,
-            year : unsaved_expense.year,
-            saved: true,
-            author:unsaved_expense.author
-
-        })
-        if(savedExpense){
-            // the type of the expense was found with the same month and year
-            const updatedCost = savedExpense.cost + unsaved_expense.cost; 
-            await Expense.updateOne({_id:savedExpense._id},{
-                cost:updatedCost
-            })
-        }
-        else{
-            const newSavedExpense = new Expense({
-                name: "saved",
-                type : unsaved_expense.type,
-                cost : unsaved_expense.cost,
-                date : unsaved_expense.date,
-                month : unsaved_expense.month,
-                year : unsaved_expense.year,
-                saved: true,
-                author:unsaved_expense.author
-            });
-            await newSavedExpense.save();
-        }
-        //delete the unsaved expense after processing it
-        await Expense.deleteOne({_id:unsaved_expense._id});
-
-    }
-
+    await saveUnsavedExpenses(req.session.user);
     res.redirect("/expenses");
-
 }));
 
 

@@ -132,7 +132,7 @@
               <td><%=savedExpense.name %></td>
               <td><%=savedExpense.type%></td>
               <td><%=savedExpense.date.getMonth()+1%>-<%=savedExpense.date.getFullYear()%></td>
-              <td><%=savedExpense.cost%></td>
+              <td><%=savedExpense.cost.toFixed(2)%></td>
           </tr>
           <% idx++ %>
       <% } %>

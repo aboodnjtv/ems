@@ -14,24 +14,24 @@ const connectToDB = async()=>{
 }
 
 
-// connectToDB();
+connectToDB();
 
 
 // a function to make an update to database
 const update = async()=>{
 
+    /*
     const expenses = await Expense.find();// all expenses 
     for(expense of expenses){
         const month = expense.date.getMonth()+1;
         const year = expense.date.getFullYear();
-        await Expense.updateOne({_id:expense._id},
-            {
-                month,
-                year,
-                saved:false
-            }
-        )
+        // await Expense.updateOne({_id:expense._id},
+        //     {
+                
+        //     }
+        // )
     }
+        */
 }
 
 
