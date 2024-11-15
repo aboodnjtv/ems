@@ -3,7 +3,6 @@ const router = express.Router();
 
 const Expense = require("../models/expense");
 const ExpenseType = require("../models/expenseType");
-const MonthlyExpense = require("../models/monthlyExpense");
 
 //middlewares
 const {isLoggedIn,isVerified} = require("../utils/middleware");

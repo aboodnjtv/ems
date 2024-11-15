@@ -1,4 +1,6 @@
 const Expense = require("../../models/expense");
+const MonthlyExpense = require("../../models/monthlyExpense");
+
 
 // helper functions
 
@@ -38,6 +40,23 @@ async function create_new_saved_expense(unsaved_expense){
 }
 
 
+async function create_new_unsaved_expense_from_monthly_expense(monthlyExpense,month,year){
+    const newUnsavedExpense = new Expense({
+        name:monthlyExpense.name,
+        type:monthlyExpense.type,
+        cost:monthlyExpense.cost,
+        date:new Date(),
+        month,
+        year,
+        saved:false,
+        author:monthlyExpense.author
+    })
+    // save the newly created unsaved expense
+    await newUnsavedExpense.save();
+}
+
+
+
 // updates the savedExpense by adding the cost of the unsaved expense
 async function update_saved_expense_cost(savedExpense,unsaved_expense){
     const updatedCost = savedExpense.cost + unsaved_expense.cost; 
@@ -46,6 +65,8 @@ async function update_saved_expense_cost(savedExpense,unsaved_expense){
     })
 }
 
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
 // Exported functions
 
@@ -70,21 +91,14 @@ module.exports.saveUnsavedExpenses = async function (userId) {
 
 //retrieve the monthly expenses and add them to the unsaved expenses 
 module.exports.import_monthly_expenses = async function (userId) {
+    //get all monthly expenses that belong to the logged in user
     const monthlyExpenses = await MonthlyExpense.find({author:userId});
+    //use today's date when making a new unsaved expense 
     const todaysDate = new Date();
     const month = todaysDate.getMonth()+1;
     const year = todaysDate.getFullYear();
-    for(let monthlyExpense of monthlyExpenses){
-        const newUnsavedExpense = new Expense({
-            name:monthlyExpense.name,
-            type:monthlyExpense.type,
-            cost:monthlyExpense.cost,
-            date:new Date(),
-            month,
-            year,
-            saved:false,
-            author:req.session.user
-        })
-        await newUnsavedExpense.save();
-    }
+
+    // for each monthly expense, make a new unsaved expense using today's date
+    for(let monthlyExpense of monthlyExpenses)
+        await create_new_unsaved_expense_from_monthly_expense(monthlyExpense,month,year);
 };
