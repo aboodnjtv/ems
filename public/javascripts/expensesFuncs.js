@@ -25,7 +25,7 @@ async function find_saved_expense_with_same_type_month_and_year(unsaved_expense)
 }
 
 // creates a new saved expense with the type, month, year, and cost of the unsaved expense
-async function create_new_saved_expense(unsaved_expense){
+async function create_new_saved_expense_from_unsaved_expense(unsaved_expense){
     const newSavedExpense = new Expense({
         name: "saved",
         type : unsaved_expense.type,
@@ -39,7 +39,7 @@ async function create_new_saved_expense(unsaved_expense){
     await newSavedExpense.save();
 }
 
-
+// creates an unsaved expense from a monthly expense
 async function create_new_unsaved_expense_from_monthly_expense(monthlyExpense,month,year){
     const newUnsavedExpense = new Expense({
         name:monthlyExpense.name,
@@ -55,7 +55,20 @@ async function create_new_unsaved_expense_from_monthly_expense(monthlyExpense,mo
     await newUnsavedExpense.save();
 }
 
-
+// creates a new unsaved expense
+async function create_new_unsaved_expense(name,type,cost,date,month,year,userId){
+    const new_unsaved_expense = new Expense({
+        name,
+        type,
+        cost,
+        date,
+        month,
+        year,
+        saved:false,
+        author: userId
+    })
+    await new_unsaved_expense.save();
+}
 
 // updates the savedExpense by adding the cost of the unsaved expense
 async function update_saved_expense_cost(savedExpense,unsaved_expense){
@@ -82,7 +95,7 @@ module.exports.saveUnsavedExpenses = async function (userId) {
         if(savedExpense)
             await update_saved_expense_cost(savedExpense,unsaved_expense);
         else
-            await create_new_saved_expense(unsaved_expense);
+            await create_new_saved_expense_from_unsaved_expense(unsaved_expense);
         //delete the unsaved expense after processing it
         await Expense.deleteOne({_id:unsaved_expense._id});
     }
@@ -100,4 +113,23 @@ module.exports.import_monthly_expenses = async function (userId) {
     // for each monthly expense, make a new unsaved expense using today's date
     for(let monthlyExpense of monthlyExpenses)
         await create_new_unsaved_expense_from_monthly_expense(monthlyExpense,month,year);
+};
+
+
+// creates a new unsaved expense given the name, type, cost, and date
+module.exports.add_unsaved_expense = async function (name,type,cost,date,userId) {
+    let day;
+    if(!date){
+        date = new Date();
+        day = date.getDate();
+    }
+    else{
+        date = new Date(date);
+        day = date.getDate()+1; // because of the we get the date form html file, we need to add 1
+        //update the date with the corrected day
+        date = new Date(`${date.getFullYear()}, ${date.getMonth()+1}, ${day}`);
+    }
+    const month = date.getMonth()+1;  
+    const year = date.getFullYear();  
+    await create_new_unsaved_expense(name,type,cost,date,month,year,userId);
 };
