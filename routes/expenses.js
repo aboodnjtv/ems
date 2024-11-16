@@ -10,7 +10,10 @@ const {catchAsync} = require("../utils/catchAsync");
 
 
 // helper functions
-const {saveUnsavedExpenses,import_monthly_expenses} = require("../public/javascripts/expensesFuncs");
+const { saveUnsavedExpenses,
+        import_monthly_expenses,
+        add_unsaved_expense
+        } = require("../public/javascripts/expensesFuncs");
 
 // expenses main page
 router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
@@ -65,35 +68,9 @@ router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
 router.post("/expenses/add",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     let {name,type,cost,date} = req.body;
     // simple way to make sure name is not empty or named "saved"
-    if(!name){
+    if(!name)
         return res.redirect("/expenses");
-    }
-    let day;
-    if(!date){
-        date = new Date();
-        day = date.getDate();
-    }
-    else{
-        date = new Date(date);
-        day = date.getDate()+1; // because of the we get the date form html file, we need to add 1
-        //update the date with the corrected day
-        date = new Date(`${date.getFullYear()}, ${date.getMonth()+1}, ${day}`);
-
-    }
-    const month = date.getMonth()+1;  
-    const year = date.getFullYear();  
-
-    const newExpense = new Expense({
-        name,
-        type,
-        cost,
-        date,
-        month,
-        year,
-        saved:false,
-        author: req.session.user
-    })
-    await newExpense.save();
+    await add_unsaved_expense(name,type,cost,date,req.session.user);
     res.redirect("/expenses");
 }));
 
@@ -110,7 +87,7 @@ router.post("/expenses/save-expenses",isLoggedIn,isVerified,catchAsync(async(req
     res.redirect("/expenses");
 }));
 
-
+// import monthly expenses as unsaved expenses
 router.post("/expenses/import-monthly-expenses",async(req,res)=>{
     // now add all the monthly expenses (if any)
     await import_monthly_expenses(req.session.user);
