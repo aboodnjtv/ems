@@ -1,5 +1,6 @@
 const Expense = require("../../models/expense");
 const MonthlyExpense = require("../../models/monthlyExpense");
+const ExpenseType = require("../../models/expenseType");
 
 
 // helper functions
@@ -83,6 +84,64 @@ async function update_saved_expense_cost(savedExpense,unsaved_expense){
 /////////////////////////////////////////////////////
 // Exported functions
 
+// retrieves all unsaved expenses of the user
+module.exports.get_unsaved_expenses = async function (userId) {
+    const unsaved_expenses = await Expense.find({
+        author:userId,
+        saved:false,
+    });
+    return unsaved_expenses;
+};
+// retrieves all saved expenses of the user
+module.exports.get_saved_expenses = async function (userId) {
+    const saved_expenses = await Expense.find({
+        author:userId,
+        saved:true,
+    });
+    return saved_expenses;
+};
+
+// retrieves all expenses types of the user
+module.exports.get_expenses_type = async function (userId) {
+    const expenses_types = await ExpenseType.find({author:userId})
+    return expenses_types;
+};
+
+// calculates total Costs of all current unsaved expenses
+module.exports.calculate_total_costs = function (unsaved_expenses) {
+    let totalCosts = 0;
+    // to calculate the total spending
+    for(unsaved_expense of unsaved_expenses){
+        totalCosts += unsaved_expense.cost;
+    }
+    totalCosts = totalCosts.toFixed(2);
+    return totalCosts;
+};
+
+// makes the report for the current unsaved expenses
+module.exports.unsaved_expenses_report = function (unsaved_expenses,totalCosts) {
+    const map = new Map();
+    for(unsaved_expense of unsaved_expenses){
+        if(map.has(unsaved_expense.type)){
+            let curTotal = map.get(unsaved_expense.type) +unsaved_expense.cost; 
+            map.set(unsaved_expense.type,curTotal);
+        }
+        else{
+            map.set(unsaved_expense.type,unsaved_expense.cost);
+        }
+    }
+
+    const report = [];
+    for(let ele of map){
+        report.push({
+            type:ele[0],
+            total:ele[1].toFixed(2),
+            percentage:((100*ele[1])/totalCosts).toFixed(2)
+        })
+    }
+    return report;
+};
+
 //takes all the unsaved expenses and save them
 module.exports.saveUnsavedExpenses = async function (userId) {
     // for each unsaved expense, check if the type with the same month
@@ -133,3 +192,7 @@ module.exports.add_unsaved_expense = async function (name,type,cost,date,userId)
     const year = date.getFullYear();  
     await create_new_unsaved_expense(name,type,cost,date,month,year,userId);
 };
+
+
+
+

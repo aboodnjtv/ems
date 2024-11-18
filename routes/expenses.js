@@ -12,55 +12,22 @@ const {catchAsync} = require("../utils/catchAsync");
 // helper functions
 const { saveUnsavedExpenses,
         import_monthly_expenses,
-        add_unsaved_expense
+        add_unsaved_expense,
+        get_unsaved_expenses,
+        get_saved_expenses,
+        get_expenses_type,
+        calculate_total_costs,
+        unsaved_expenses_report
         } = require("../public/javascripts/expensesFuncs");
 
 // expenses main page
 router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
-    
     //change to unsaved expenses
-    const expenses = await Expense.find({
-        author:req.session.user,
-        saved:false,
-    })
-    const expenseTypes = await ExpenseType.find({author:req.session.user});
-
-    const savedExpenses = await Expense.find({
-        author:req.session.user,
-        saved:true
-    });
-
-    let totalCosts = 0;
-    // to calculate the total spending
-    for(expense of expenses){
-        totalCosts += expense.cost;
-    }
-
-    // do logic here then exoport it to another file
-    const map = new Map();
-    for(expense of expenses){
-        if(map.has(expense.type)){
-            let curTotal = map.get(expense.type) +expense.cost; 
-            map.set(expense.type,curTotal);
-        }
-        else{
-            map.set(expense.type,expense.cost);
-        }
-    }
-
-    const report = [];
-    for(let ele of map){
-        report.push({
-            type:ele[0],
-            total:ele[1].toFixed(2),
-            percentage:((100*ele[1])/totalCosts).toFixed(2)
-        })
-    }
-
-
-
-    // limit to 2 decimals
-    totalCosts = totalCosts.toFixed(2);
+    const expenses = await get_unsaved_expenses(req.session.user);
+    const expenseTypes = await get_expenses_type(req.session.user);
+    const savedExpenses = await get_saved_expenses(req.session.user);
+    let totalCosts = calculate_total_costs(expenses);
+    const report = unsaved_expenses_report(expenses,totalCosts)
     res.render("./expenses",{expenses,expenseTypes,totalCosts,report,savedExpenses});
 }));
 
