@@ -29,8 +29,7 @@ app.set("views", path.join(__dirname, "/views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true })); // to parse req.body
 app.use(methodOverride("_method")); // so we could send PUT and DELETE requests
-app.use(session({ secret: "sessionsecret" })); // use session
-
+app.use(session({ secret: process.env.SESSION_SECRET })); // use session
 
 // res.locals
 app.use((req, res, next) => {
