@@ -60,15 +60,15 @@
     </thead>
     <tbody>
         <% let idx = 1 %>
-        <% for(let expense of expenses){ %>
+        <% for(let unsaved_expense of unsaved_expenses){ %>
             <tr>
                 <th scope="row"><%=idx%></th>
-                <td><%=expense.name %></td>
-                <td><%=expense.type%></td>
-                <td><%=expense.date.getMonth()+1%>-<%=expense.date.getDate()%>-<%=expense.date.getFullYear()%></td>
-                <td><%=expense.cost%></td>
+                <td><%=unsaved_expense.name %></td>
+                <td><%=unsaved_expense.type%></td>
+                <td><%=unsaved_expense.date.getMonth()+1%>-<%=unsaved_expense.date.getDate()%>-<%=unsaved_expense.date.getFullYear()%></td>
+                <td><%=unsaved_expense.cost%></td>
                 <td> 
-                  <form action="/expenses/deleteExpense/<%=expense._id%>" method="POST">
+                  <form action="/expenses/deleteExpense/<%=unsaved_expense._id%>" method="POST">
                     <button class="btn btn-danger">Delete</button>
                   </form>
                 </td>
