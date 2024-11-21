@@ -1,6 +1,12 @@
 <% layout("layouts/boilerplate")%>
 
 <h1>Expenses Settings page</h1>
+
+<h3>Download Expenses as CSV file</h3>
+<form action="/expensesSettings/download-expenses" method="POST">
+  <button>Download</button>
+</form>
+
 <h2>add your own expense types</h2>
 <form class="inlineForm" action="/expenses/settings/addtype" method="POST">
 

@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const ExpenseType = require("../models/expenseType");
+const Expense = require("../models/expense");
 const MonthlyExpense = require("../models/monthlyExpense");
+
+const {download_expenses} = require("../public/javascripts/file_system")
 
 //middlewares
 const {isLoggedIn,isVerified} = require("../utils/middleware");
@@ -69,6 +72,12 @@ router.post("/expensesSettings/delete-monthly-expense/:id",isLoggedIn,isVerified
 
 }));
 
+
+router.post("/expensesSettings/download-expenses",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
+    const expenses = await Expense.find({author:req.session.user});
+    await download_expenses(expenses);
+    res.redirect("/expenses/settings");
+}));
 
 
 module.exports = router;
