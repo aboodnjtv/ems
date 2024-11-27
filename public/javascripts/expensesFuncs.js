@@ -194,5 +194,22 @@ module.exports.add_unsaved_expense = async function (name,type,cost,date,userId)
 };
 
 
+// creates a new expenses 
+module.exports.create_new_expense = async function(name,type,cost,date,month,year,saved,userId){
+    const new_unsaved_expense = new Expense({
+        name,
+        type,
+        cost,
+        date,
+        month,
+        year,
+        saved,
+        author: userId
+    })
+    await new_unsaved_expense.save();
+}
+
+
+
 
 
