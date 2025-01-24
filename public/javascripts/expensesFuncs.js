@@ -195,4 +195,23 @@ module.exports.add_unsaved_expense = async function (name,type,cost,date,userId)
 
 
 
+// show a months report
+module.exports.get_month_saved_expenses = async function (date,author) {
+    //get all the SAVED expenses given the month and year
+    // make sure a date has been selected
+    if(date=="")
+        return undefined;
+    const date_as_array = date.split("-");
+    const year = date_as_array[0];
+    var month = date_as_array[1];
+    // months from Jan to Sep start with 0, example : 04
+    if(month.charAt(0)==="0")
+        month = month.slice(1);
+    // pull the SAVED expenses from database 
+    const reported_expenses = await Expense.find({author, saved:true,month,year});
+    return reported_expenses;
+
+    
+};
+
 

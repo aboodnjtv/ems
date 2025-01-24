@@ -17,7 +17,8 @@ const { saveUnsavedExpenses,
         get_saved_expenses,
         get_expenses_type,
         calculate_total_costs,
-        unsaved_expenses_report
+        unsaved_expenses_report,
+        get_month_saved_expenses
         } = require("../public/javascripts/expensesFuncs");
 
 // expenses main page
@@ -65,19 +66,8 @@ router.post("/expenses/import-monthly-expenses",isLoggedIn,isVerified,catchAsync
 
 // show a month report
 router.post("/expenses/show-month-report",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
-    //get all the SAVED expenses from the date of the given month and year
-    const {date} = req.body;
-    if(date=="")
-        return res.redirect("/expenses");
-    const date_as_array = date.split("-");
-    const year = date_as_array[0];
-    var month = date_as_array[1];
-    // months from Jan to Sep start with 0, example : 04
-    if(month.charAt(0)==="0")
-        month = month.slice(1);
-    // pull the SAVED expenses from database 
-    const reported_expenses = await Expense.find({author:req.session.user, saved:true,month,year});
-    req.session.reported_expenses = reported_expenses;
+    const{date} = req.body;
+    req.session.reported_expenses = await get_month_saved_expenses(date,req.session.user);
     res.redirect("/expenses");
 }));
 
