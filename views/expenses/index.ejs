@@ -110,6 +110,53 @@
   </table>
 
 
+<!-- show report based on month and year -->
+<h2>Show a Month Report</h2>
+<form action="/expenses/show-month-report" method="POST">
+  <input name="date" type="month">
+  <button>Show Report</button>
+</form>
+
+<% if(typeof reported_expenses !== 'undefined') {%>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Number</th>
+          <th scope="col">Type</th>
+          <th scope="col">Date</th>
+          <th scope="col">Cost ($)</th>
+        </tr>
+      </thead>
+      <tbody>
+          <%idx = 1 %>
+          <% totalCosts = 0 %>
+          <% for(let expense of reported_expenses){ %>
+            <%expense.date = new Date(expense.date);%>
+              <tr>
+                  <th scope="row"><%=idx%></th>
+                  <td><%=expense.type%></td>
+                  <td><%=expense.date.getMonth()+1%>-<%=expense.date.getFullYear()%></td>
+                  <td><%=expense.cost.toFixed(2)%></td>
+              </tr>
+              <% idx++ %>
+              <% totalCosts+=Number(expense.cost) %>
+          <% } %>
+          <% totalCosts = totalCosts.toFixed(2) %>
+        
+        <tr>
+          <th scope="row">/</th>
+          <td>Total Spending</td>
+          <td>-</td>
+          <td><%=totalCosts%></td>
+        </tr>
+      
+      </tbody>
+    </table>  
+<%  } %>
+
+
+
+
 <!-- TESTING ONLY START----------------------------------------------------- -->
 <h2>All Saved expenses</h2>
 

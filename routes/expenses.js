@@ -28,7 +28,8 @@ router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
     const savedExpenses = await get_saved_expenses(req.session.user);
     let totalCosts = calculate_total_costs(unsaved_expenses);
     const report = unsaved_expenses_report(unsaved_expenses,totalCosts)
-    res.render("./expenses",{unsaved_expenses,expenseTypes,totalCosts,report,savedExpenses});
+    const reported_expenses = req.session.reported_expenses;
+    res.render("./expenses",{unsaved_expenses,expenseTypes,totalCosts,report,savedExpenses,reported_expenses});
 }));
 
 // add expense
@@ -55,10 +56,32 @@ router.post("/expenses/save-expenses",isLoggedIn,isVerified,catchAsync(async(req
 }));
 
 // import monthly expenses as unsaved expenses
-router.post("/expenses/import-monthly-expenses",async(req,res)=>{
+router.post("/expenses/import-monthly-expenses",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     // now add all the monthly expenses (if any)
     await import_monthly_expenses(req.session.user);
     res.redirect("/expenses");
-})
+}));
+
+
+// show a month report
+router.post("/expenses/show-month-report",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
+    //get all the SAVED expenses from the date of the given month and year
+    const {date} = req.body;
+    if(date=="")
+        return res.redirect("/expenses");
+    const date_as_array = date.split("-");
+    const year = date_as_array[0];
+    var month = date_as_array[1];
+    // months from Jan to Sep start with 0, example : 04
+    if(month.charAt(0)==="0")
+        month = month.slice(1);
+    // pull the SAVED expenses from database 
+    const reported_expenses = await Expense.find({author:req.session.user, saved:true,month,year});
+    req.session.reported_expenses = reported_expenses;
+    res.redirect("/expenses");
+}));
+
+
+
 
 module.exports = router;
