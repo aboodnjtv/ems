@@ -92,6 +92,9 @@ module.exports.get_unsaved_expenses = async function (userId) {
     });
     return unsaved_expenses;
 };
+
+
+// -------------  Currently unused --------------------
 // retrieves all saved expenses of the user
 module.exports.get_saved_expenses = async function (userId) {
     const saved_expenses = await Expense.find({
@@ -100,6 +103,8 @@ module.exports.get_saved_expenses = async function (userId) {
     });
     return saved_expenses;
 };
+//------------------------------------------------------
+
 
 // retrieves all expenses types of the user
 module.exports.get_expenses_type = async function (userId) {

@@ -156,35 +156,3 @@
 
 
 
-
-<!-- TESTING ONLY START----------------------------------------------------- -->
-<h2>All Saved expenses</h2>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Number</th>
-      <th scope="col">Name</th>
-      <th scope="col">Type</th>
-      <th scope="col">Date</th>
-      <th scope="col">Cost ($)</th>
-    </tr>
-  </thead>
-  <tbody>
-      <%idx = 1 %>
-      <% for(let savedExpense of savedExpenses){ %>
-          <tr>
-              <th scope="row"><%=idx%></th>
-              <td><%=savedExpense.name %></td>
-              <td><%=savedExpense.type%></td>
-              <td><%=savedExpense.date.getMonth()+1%>-<%=savedExpense.date.getFullYear()%></td>
-              <td><%=savedExpense.cost.toFixed(2)%></td>
-          </tr>
-          <% idx++ %>
-      <% } %>
-  </tbody>
-</table>
-
-<!-- TESTING ONLY END----------------------------------------------------- -->
-
-

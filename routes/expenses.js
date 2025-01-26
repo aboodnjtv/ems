@@ -26,11 +26,10 @@ router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
     //change to unsaved expenses
     const unsaved_expenses = await get_unsaved_expenses(req.session.user);
     const expenseTypes = await get_expenses_type(req.session.user);
-    const savedExpenses = await get_saved_expenses(req.session.user);
     let totalCosts = calculate_total_costs(unsaved_expenses);
     const report = unsaved_expenses_report(unsaved_expenses,totalCosts)
     const reported_expenses = req.session.reported_expenses;
-    res.render("./expenses",{unsaved_expenses,expenseTypes,totalCosts,report,savedExpenses,reported_expenses});
+    res.render("./expenses",{unsaved_expenses,expenseTypes,totalCosts,report,reported_expenses});
 }));
 
 // add expense
