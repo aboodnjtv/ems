@@ -17,7 +17,8 @@ const { saveUnsavedExpenses,
         get_saved_expenses,
         get_expenses_type,
         calculate_total_costs,
-        unsaved_expenses_report
+        unsaved_expenses_report,
+        get_month_saved_expenses
         } = require("../public/javascripts/expensesFuncs");
 
 // expenses main page
@@ -25,10 +26,10 @@ router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{
     //change to unsaved expenses
     const unsaved_expenses = await get_unsaved_expenses(req.session.user);
     const expenseTypes = await get_expenses_type(req.session.user);
-    const savedExpenses = await get_saved_expenses(req.session.user);
     let totalCosts = calculate_total_costs(unsaved_expenses);
     const report = unsaved_expenses_report(unsaved_expenses,totalCosts)
-    res.render("./expenses",{unsaved_expenses,expenseTypes,totalCosts,report,savedExpenses});
+    const reported_expenses = req.session.reported_expenses;
+    res.render("./expenses",{unsaved_expenses,expenseTypes,totalCosts,report,reported_expenses});
 }));
 
 // add expense
@@ -55,10 +56,21 @@ router.post("/expenses/save-expenses",isLoggedIn,isVerified,catchAsync(async(req
 }));
 
 // import monthly expenses as unsaved expenses
-router.post("/expenses/import-monthly-expenses",async(req,res)=>{
+router.post("/expenses/import-monthly-expenses",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     // now add all the monthly expenses (if any)
     await import_monthly_expenses(req.session.user);
     res.redirect("/expenses");
-})
+}));
+
+
+// show a month report
+router.post("/expenses/show-month-report",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
+    const{date} = req.body;
+    req.session.reported_expenses = await get_month_saved_expenses(date,req.session.user);
+    res.redirect("/expenses");
+}));
+
+
+
 
 module.exports = router;

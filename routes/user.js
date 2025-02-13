@@ -8,6 +8,7 @@ const { catchAsync } = require("../utils/catchAsync");
 const { isLoggedIn,isLoggedOut,isVerified,isNotVerified } = require("../utils/middleware");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const Expense = require("../models/expense");
 const {sendOpt,verifyOtp} = require("../utils/otp-service");
 
 
@@ -90,7 +91,13 @@ router.post("/verify/send-otp",isLoggedIn,catchAsync(async(req,res)=>{
 //profile page
 router.get("/profile",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     const user = await User.findById(req.session.user._id);
-    res.render("user/profile",{user});
+    const all_user_expenses = await Expense.find({author:req.session.user});
+    let total_spending = 0;
+    for(let expense of all_user_expenses){
+        total_spending+=expense.cost; 
+    }
+    total_spending = total_spending.toFixed(2);
+    res.render("user/profile",{user,total_spending});
 }));
 
 
