@@ -19,7 +19,9 @@ const { saveUnsavedExpenses,
         calculate_total_costs,
         unsaved_expenses_report,
         get_month_saved_expenses
-        } = require("../public/javascripts/expensesFuncs");
+        } = require("../utils/expensesFuncs");
+
+
 
 // expenses main page
 router.get("/expenses",isLoggedIn,isVerified,catchAsync(async (req,res)=>{

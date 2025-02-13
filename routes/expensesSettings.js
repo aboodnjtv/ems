@@ -5,8 +5,8 @@ const ExpenseType = require("../models/expenseType");
 const Expense = require("../models/expense");
 const MonthlyExpense = require("../models/monthlyExpense");
 
-const {download_expenses,get_expenses_from_file,upload} = require("../public/javascripts/file_system")
-const {create_new_expense} = require("../public/javascripts/expensesFuncs")
+const {download_expenses,get_expenses_from_file,upload} = require("../utils/file_system")
+const {create_new_expense} = require("../utils/expensesFuncs")
 
 //middlewares
 const {isLoggedIn,isVerified} = require("../utils/middleware");
