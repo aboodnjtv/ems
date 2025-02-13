@@ -125,11 +125,18 @@
           <th scope="col">Type</th>
           <th scope="col">Date</th>
           <th scope="col">Cost ($)</th>
+          <th scope="col">Percentage</th>
         </tr>
       </thead>
       <tbody>
           <%idx = 1 %>
           <% totalCosts = 0 %>
+          
+          <!-- find the totalCosts -->
+          <% for(let expense of reported_expenses){ %>
+              <% totalCosts+=Number(expense.cost) %>
+          <% } %>
+          
           <% for(let expense of reported_expenses){ %>
             <%expense.date = new Date(expense.date);%>
               <tr>
@@ -137,9 +144,9 @@
                   <td><%=expense.type%></td>
                   <td><%=expense.date.getMonth()+1%>-<%=expense.date.getFullYear()%></td>
                   <td><%=expense.cost.toFixed(2)%></td>
+                  <td> <%=((expense.cost*100)/totalCosts).toFixed(2)%>%</td>
               </tr>
               <% idx++ %>
-              <% totalCosts+=Number(expense.cost) %>
           <% } %>
           <% totalCosts = totalCosts.toFixed(2) %>
         
@@ -148,6 +155,7 @@
           <td>Total Spending</td>
           <td>-</td>
           <td><%=totalCosts%></td>
+          <td>100%</td>
         </tr>
       
       </tbody>
