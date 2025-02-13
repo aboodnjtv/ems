@@ -5,7 +5,8 @@ const ExpenseType = require("../models/expenseType");
 const Expense = require("../models/expense");
 const MonthlyExpense = require("../models/monthlyExpense");
 
-const {download_expenses} = require("../public/javascripts/file_system")
+const {download_expenses,get_expenses_from_file,upload} = require("../public/javascripts/file_system")
+const {create_new_expense} = require("../public/javascripts/expensesFuncs")
 
 //middlewares
 const {isLoggedIn,isVerified} = require("../utils/middleware");
@@ -79,5 +80,17 @@ router.post("/expensesSettings/download-expenses",isLoggedIn,isVerified,catchAsy
     res.redirect("/expenses/settings");
 }));
 
+// upload expenses
+router.post("/expensesSettings/upload-expenses",isLoggedIn,isVerified,upload.single("csv_file"),catchAsync(async(req,res)=>{
+    const file_path = `${req.file.destination}/${req.file.originalname}`;
+    const extracted_expenses = await get_expenses_from_file(file_path);
+    await Expense.deleteMany({author:req.session.user});
+    for(let extracted_expense of extracted_expenses){
+        const {name,type,cost,date,month,year,saved} = extracted_expense;
+        await  create_new_expense(name,type,cost,date,month,year,saved,req.session.user)
+
+    }
+    res.redirect("/expenses/settings");
+}));
 
 module.exports = router;

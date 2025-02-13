@@ -7,6 +7,13 @@
   <button>Download</button>
 </form>
 
+
+<h3>Upload Expense from a CSV file</h3>
+<form action="/expensesSettings/upload-expenses" method="POST" enctype="multipart/form-data">
+  <input type="file" name="csv_file">
+  <button>Upload</button>
+</form>
+
 <h2>add your own expense types</h2>
 <form class="inlineForm" action="/expenses/settings/addtype" method="POST">
 
