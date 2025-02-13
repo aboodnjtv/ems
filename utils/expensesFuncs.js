@@ -1,6 +1,6 @@
-const Expense = require("../../models/expense");
-const MonthlyExpense = require("../../models/monthlyExpense");
-const ExpenseType = require("../../models/expenseType");
+const Expense = require("../models/expense");
+const MonthlyExpense = require("../models/monthlyExpense");
+const ExpenseType = require("../models/expenseType");
 
 
 // helper functions
