@@ -24,51 +24,60 @@
 </div>
 
 
-  <table class="table">
+
+<form action="/expenses/save-expenses" method="POST">
+  <button class="btn btn-success">Save Expenses</button>
+</form>
+<form action="/expenses/import-monthly-expenses" method="POST">
+  <button class="btn btn-info">Import Monthly Expenses</button>
+</form>
+
+
+  <table class="expenses-table">
     <thead>
-      <tr>
-        <th scope="col">Number</th>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Date</th>
-        <th scope="col">Cost ($)</th>
-        <th scope="col">
-          <form action="/expenses/save-expenses" method="POST">
-            <button class="btn btn-success">Save Expenses</button>
-          </form>
-        </th>
-        <th scope="col">
-          <form action="/expenses/import-monthly-expenses" method="POST">
-            <button class="btn btn-info">Import Monthly Expenses</button>
-          </form>
-        </th>
-        
-      </tr>
+        <tr>
+            <th scope="col">Number</th>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Date</th>
+            <th scope="col">Cost ($)</th>
+            <th scope="col">Options</th>
+        </tr>
     </thead>
     <tbody>
-        <% let idx = 1 %>
-        <% for(let unsaved_expense of unsaved_expenses){ %>
-            <tr>
-                <th scope="row"><%=idx%></th>
-                <td><%=unsaved_expense.name %></td>
-                <td><%=unsaved_expense.type%></td>
-                <td><%=unsaved_expense.date.getMonth()+1%>-<%=unsaved_expense.date.getDate()%>-<%=unsaved_expense.date.getFullYear()%></td>
-                <td><%=unsaved_expense.cost%></td>
-                <td> 
-                  <form action="/expenses/deleteExpense/<%=unsaved_expense._id%>" method="POST">
-                    <button class="btn btn-danger">Delete</button>
-                  </form>
-                </td>
-            </tr>
-            <% idx++ %>
-        <% } %>
+      <% let idx = 1 %>
+      <% for(let unsaved_expense of unsaved_expenses){ %>
+          <tr>
+              <td scope="row"><%=idx%></th>
+              <td><%=unsaved_expense.name %></td>
+              <td><%=unsaved_expense.type%></td>
+              <td><%=unsaved_expense.date.getMonth()+1%>-<%=unsaved_expense.date.getDate()%>-<%=unsaved_expense.date.getFullYear()%></td>
+              <td><%=unsaved_expense.cost%></td>
+              <td id="options_buttons">
+                <!-- <form action="/expenses/deleteExpense/<%=unsaved_expense._id%>" method="POST"> -->
+                  <button class="btn save">Save</button>
+                <!-- </form> -->
+                <form action="/expenses/deleteExpense/<%=unsaved_expense._id%>" method="POST">
+                  <button class="btn delete">Delete</button>
+                </form>
+              </td>
+
+          </tr>
+          <% idx++ %>
+      <% } %>
+
     </tbody>
-  </table>
+</table>
+
+
+
+
+
 
 
 
   <h2>This Month's Report</h2>
-  <table class="table">
+  <table class="expenses-table">
     <thead>
       <tr>
         <th scope="col">Number</th>
@@ -81,14 +90,14 @@
         <% idx = 1 %>
         <% for(let reportEle of report){ %>
             <tr>
-                <th scope="row"><%=idx%></th>
+                <td scope="row"><%=idx%></th>
                 <td><%=reportEle.type %></td>
                 <td><%=reportEle.total%></td>
                 <td><%=reportEle.percentage%>%</td>
             </tr>
             <% idx++ %>
         <% } %>
-        <th scope="row">/</th>
+        <td scope="row">/</th>
         <td>Total Spending</td>
         <td><%=totalCosts%></td>
         <td>100%</td>
@@ -105,7 +114,7 @@
 </form>
 
 <% if(typeof reported_expenses !== 'undefined') {%>
-    <table class="table">
+    <table class="expenses-table">
       <thead>
         <tr>
           <th scope="col">Number</th>
@@ -127,7 +136,7 @@
           <% for(let expense of reported_expenses){ %>
             <%expense.date = new Date(expense.date);%>
               <tr>
-                  <th scope="row"><%=idx%></th>
+                  <td scope="row"><%=idx%></th>
                   <td><%=expense.type%></td>
                   <td><%=expense.date.getMonth()+1%>-<%=expense.date.getFullYear()%></td>
                   <td><%=expense.cost.toFixed(2)%></td>
@@ -138,7 +147,7 @@
           <% totalCosts = totalCosts.toFixed(2) %>
         
         <tr>
-          <th scope="row">/</th>
+          <td scope="row">/</th>
           <td>Total Spending</td>
           <td>-</td>
           <td><%=totalCosts%></td>
