@@ -1,0 +1,86 @@
+
+
+
+/* body{
+    background: linear-gradient(135deg, #a981d3, #99bcf8);
+} */
+
+
+.expenses-table{
+    width:70vw;
+    text-align: left;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    letter-spacing: 1px;
+}
+
+.expenses-table  th{
+    background-color: #7e7e7e;  
+    color:white;
+    font-weight: lighter;
+}
+
+.expenses-table  th,.expenses-table  td{
+    padding : 12px;
+    padding-left: 22px;
+}
+.expenses-table  tr{
+    transition: 0.3s ease-in-out;
+
+}
+
+.expenses-table  tr:nth-child(even){
+    background-color: #efefef;  
+    
+}
+.expenses-table  tr:hover{
+    background-color: #d7d7d7;  
+    
+}
+
+
+.btn{
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+    margin-right:7px;
+
+}
+
+.save{
+    background-color: white;
+    border: 1px solid #2ecc71;
+    color: #2ecc71;
+}
+
+.save:hover{
+    background-color: #18984e;
+    color: white;
+    border: 1px solid #18984e;
+    
+    transform: translateY(-2px);
+}
+.delete{
+    background-color: white;
+    border: 1px solid #e74c3c;
+    color:#e74c3c ;
+}
+
+.delete:hover{
+    background-color: #e74c3c;
+    color: white;
+    border: 1px solid #e74c3c;
+    transform: translateY(-2px);
+}
+
+#options_buttons{
+    display: flex;
+}
+
+
