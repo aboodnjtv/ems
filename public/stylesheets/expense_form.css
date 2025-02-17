@@ -1,0 +1,67 @@
+.expenses-form-container{
+    background-color: white;
+    width: 1300px;
+    height: 105px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+
+
+}
+.expenses-form-container .form-row{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.expenses-form-container form {
+    width: 80%; /* Make the form take full width */
+    height: 100%; /* Optional: Make it take full height */
+    display: flex; /* Allow flex children to work properly */
+    align-items: center; /* Align items vertically */
+    justify-content: center;
+}
+
+
+.expenses-form-container input,.expenses-form-container select{
+    border: 2px solid rgb(247, 245, 245);
+    border-radius: 5px;
+    font-size: 16px;
+    padding : 10px;
+    width: 200px;
+    transition: all 0.3s ease-in-out;
+}
+
+.expenses-form-container button{
+    border: none;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    box-shadow: 0 4px 10px rgba(255, 117, 140, 0.5);
+    color: white;
+    width: 150px;
+    height: 45px;
+    border-radius:8px ;
+    transition: all 0.3s ease-in-out;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+
+
+}
+
+.expenses-form-container button:hover{
+    background: linear-gradient(135deg, #ff5e62, #ff9966);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 117, 140, 0.7);
+}
+
+.expenses-form-container input:focus,.expenses-form-container select:focus{
+    border-color: #ff758c;
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 117, 140, 0.7);
+}
+
+

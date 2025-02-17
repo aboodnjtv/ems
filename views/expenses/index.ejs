@@ -1,40 +1,27 @@
 <% layout("layouts/boilerplate")%>
 
-
 <h2>Add a new Expense</h2>
-<form class="inlineForm" action="/expenses/add" method="POST">
-
-  <label for="name">Name</label>
-  <input name="name" id="name" type="text">
-
-  <label for="type">Type</label>
-  <!-- <input id="type" name="type" type="text"> -->
-  <select name="type" id="type">
-    <!-- default expense types -->
-    <option value="GROCERY">GROCERY</option>
-    <option value="GAS">GAS</option>
-    <option value="RENT">RENT</option>
-    <!-- user-defined expense types -->
-    <% for(const expenseType of expenseTypes){%>
-      <option value="<%=expenseType.type%>"><%=expenseType.type%></option>
-    <% } %>
-
-
-  </select>
-
-  <label for="cost">Cost ($)</label>
-  <input name="cost" id="cost" type="number"  min="0" value="0" step="any">
-
-  <label for="date">Date</label>
-  <input name="date" id="date" type="date">
-
-  <button type="submit" class="btn btn-primary mb-2">Add Expense</button>
-
-</form>
-
-
-
-
+<!-- add expense form -->
+<div class="expenses-form-container">
+  <form action="/expenses/add" method="POST">
+      <div class="form-row">
+          <input name="name" type="text" placeholder="Expense Name">
+          <select name="type">
+              <!-- default expense types -->
+              <option value="GROCERY">GROCERY</option>
+              <option value="GAS">GAS</option>
+              <option value="RENT">RENT</option>
+              <!-- user-defined expense types -->
+              <% for(const expenseType of expenseTypes){%>
+                <option value="<%=expenseType.type%>"><%=expenseType.type%></option>
+              <% } %>
+          </select>
+          <input name="cost" type="number"  min="0" value="0" step="any" placeholder="Cost">
+          <input name="date" type="date" placeholder="Date">
+          <button type="submit">Add Expense</button>
+      </div>
+  </form>
+</div>
 
 
   <table class="table">
