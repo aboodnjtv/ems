@@ -1,12 +1,12 @@
 .expenses-form-container{
     background-color: white;
-    width: 1300px;
+    width: 80vw;
     height: 105px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    justify-content: left;
+    /* align-items: center; */
+    /* border-radius: 15px; */
+    /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); */
 
 
 }

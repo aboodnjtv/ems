@@ -1,0 +1,61 @@
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+.expenses_container{
+    /* justify-self: center; */
+}
+
+.header{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 100px;
+}
+.header h2{
+    border-bottom: 1px solid rgb(159, 156, 156);
+    height: 50px;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.header button{
+    height: 50px;
+    width: 250px;
+    border: none;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 5px;
+
+}
+
+.header .save{
+    background-color: white;
+    border: 1px solid rgb(88, 203, 88);
+    color: rgb(88, 203, 88);
+}
+.header .import{
+    background-color: white;
+    border: 1px solid rgb(88, 193, 203);
+    color: rgb(88, 193, 203);
+}
+
+
+.header .save:hover{
+    background-color: rgb(88, 203, 88);
+    border: 1px solid rgb(88, 203, 88);
+    color: white;
+    transform: translateY(-2px);
+}
+.header .import:hover{
+    background-color: rgb(88, 193, 203);
+    border: 1px solid rgb(88, 193, 203);
+    color: white;
+    transform: translateY(-2px);
+}
