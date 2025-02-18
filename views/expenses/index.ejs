@@ -1,162 +1,171 @@
 <% layout("layouts/boilerplate")%>
 
-<h2>Add a new Expense</h2>
-<!-- add expense form -->
-<div class="expenses-form-container">
-  <form action="/expenses/add" method="POST">
-      <div class="form-row">
-          <input name="name" type="text" placeholder="Expense Name">
-          <select name="type">
-              <!-- default expense types -->
-              <option value="GROCERY">GROCERY</option>
-              <option value="GAS">GAS</option>
-              <option value="RENT">RENT</option>
-              <!-- user-defined expense types -->
-              <% for(const expenseType of expenseTypes){%>
-                <option value="<%=expenseType.type%>"><%=expenseType.type%></option>
-              <% } %>
-          </select>
-          <input name="cost" type="number"  min="0" value="0" step="any" placeholder="Cost">
-          <input name="date" type="date" placeholder="Date">
-          <button type="submit">Add Expense</button>
-      </div>
-  </form>
-</div>
+<div class="expenses_container">
+
+  <div class="header">
+    <h2 class="text">Add New Expenses</h2>
+    <form action="/expenses/save-expenses" method="POST">
+      <button class="save">Save Expenses</button>
+    </form>
+    <form action="/expenses/import-monthly-expenses" method="POST">
+      <button class="import">Import Monthly Expenses</button>
+    </form>
+  </div>
+
+  
+  
+
+
+  <!-- add expense form -->
+  <div class="expenses-form-container">
+    <form action="/expenses/add" method="POST">
+        <div class="form-row">
+            <input name="name" type="text" placeholder="Expense Name">
+            <select name="type">
+                <!-- default expense types -->
+                <option value="GROCERY">GROCERY</option>
+                <option value="GAS">GAS</option>
+                <option value="RENT">RENT</option>
+                <!-- user-defined expense types -->
+                <% for(const expenseType of expenseTypes){%>
+                  <option value="<%=expenseType.type%>"><%=expenseType.type%></option>
+                <% } %>
+            </select>
+            <input name="cost" type="number"  min="0" value="0" step="any" placeholder="Cost">
+            <input name="date" type="date" placeholder="Date">
+            <button type="submit">Add Expense</button>
+        </div>
+    </form>
+  </div>
 
 
 
-<form action="/expenses/save-expenses" method="POST">
-  <button class="btn btn-success">Save Expenses</button>
-</form>
-<form action="/expenses/import-monthly-expenses" method="POST">
-  <button class="btn btn-info">Import Monthly Expenses</button>
-</form>
 
 
-  <table class="expenses-table">
-    <thead>
-        <tr>
-            <th scope="col">Number</th>
-            <th scope="col">Name</th>
-            <th scope="col">Type</th>
-            <th scope="col">Date</th>
-            <th scope="col">Cost ($)</th>
-            <th scope="col">Options</th>
-        </tr>
-    </thead>
-    <tbody>
-      <% let idx = 1 %>
-      <% for(let unsaved_expense of unsaved_expenses){ %>
+
+    <table class="expenses-table">
+      <thead>
           <tr>
-              <td scope="row"><%=idx%></th>
-              <td><%=unsaved_expense.name %></td>
-              <td><%=unsaved_expense.type%></td>
-              <td><%=unsaved_expense.date.getMonth()+1%>-<%=unsaved_expense.date.getDate()%>-<%=unsaved_expense.date.getFullYear()%></td>
-              <td><%=unsaved_expense.cost%></td>
-              <td id="options_buttons">
-                <!-- <form action="/expenses/deleteExpense/<%=unsaved_expense._id%>" method="POST"> -->
-                  <button class="btn save">Save</button>
-                <!-- </form> -->
-                <form action="/expenses/deleteExpense/<%=unsaved_expense._id%>" method="POST">
-                  <button class="btn delete">Delete</button>
-                </form>
-              </td>
-
+              <th scope="col">Number</th>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Date</th>
+              <th scope="col">Cost ($)</th>
+              <th scope="col">Options</th>
           </tr>
-          <% idx++ %>
-      <% } %>
-
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-  <h2>This Month's Report</h2>
-  <table class="expenses-table">
-    <thead>
-      <tr>
-        <th scope="col">Number</th>
-        <th scope="col">Expense Type</th>
-        <th scope="col">Total Spending</th>
-        <th scope="col">Percentage</th>
-      </tr>
-    </thead>
-    <tbody>
-        <% idx = 1 %>
-        <% for(let reportEle of report){ %>
+      </thead>
+      <tbody>
+        <% let idx = 1 %>
+        <% for(let unsaved_expense of unsaved_expenses){ %>
             <tr>
                 <td scope="row"><%=idx%></th>
-                <td><%=reportEle.type %></td>
-                <td><%=reportEle.total%></td>
-                <td><%=reportEle.percentage%>%</td>
+                <td><%=unsaved_expense.name %></td>
+                <td><%=unsaved_expense.type%></td>
+                <td><%=unsaved_expense.date.getMonth()+1%>-<%=unsaved_expense.date.getDate()%>-<%=unsaved_expense.date.getFullYear()%></td>
+                <td><%=unsaved_expense.cost%></td>
+                <td id="options_buttons">
+                  <!-- <form action="/expenses/deleteExpense/<%=unsaved_expense._id%>" method="POST"> -->
+                    <button class="btn save">Save</button>
+                  <!-- </form> -->
+                  <form action="/expenses/deleteExpense/<%=unsaved_expense._id%>" method="POST">
+                    <button class="btn delete">Delete</button>
+                  </form>
+                </td>
+
             </tr>
             <% idx++ %>
         <% } %>
-        <td scope="row">/</th>
-        <td>Total Spending</td>
-        <td><%=totalCosts%></td>
-        <td>100%</td>
 
-    </tbody>
+      </tbody>
   </table>
 
+    <div class="header">
+      <h2 class="text">This Month's Report</h2>
+    </div>
 
-<!-- show report based on month and year -->
-<h2>Show a Month Report</h2>
-<form action="/expenses/show-month-report" method="POST">
-  <input name="date" type="month">
-  <button>Show Report</button>
-</form>
-
-<% if(typeof reported_expenses !== 'undefined') {%>
     <table class="expenses-table">
       <thead>
         <tr>
           <th scope="col">Number</th>
-          <th scope="col">Type</th>
-          <th scope="col">Date</th>
-          <th scope="col">Cost ($)</th>
+          <th scope="col">Expense Type</th>
+          <th scope="col">Total Spending</th>
           <th scope="col">Percentage</th>
         </tr>
       </thead>
       <tbody>
-          <%idx = 1 %>
-          <% totalCosts = 0 %>
-          
-          <!-- find the totalCosts -->
-          <% for(let expense of reported_expenses){ %>
-              <% totalCosts+=Number(expense.cost) %>
-          <% } %>
-          
-          <% for(let expense of reported_expenses){ %>
-            <%expense.date = new Date(expense.date);%>
+          <% idx = 1 %>
+          <% for(let reportEle of report){ %>
               <tr>
                   <td scope="row"><%=idx%></th>
-                  <td><%=expense.type%></td>
-                  <td><%=expense.date.getMonth()+1%>-<%=expense.date.getFullYear()%></td>
-                  <td><%=expense.cost.toFixed(2)%></td>
-                  <td> <%=((expense.cost*100)/totalCosts).toFixed(2)%>%</td>
+                  <td><%=reportEle.type %></td>
+                  <td><%=reportEle.total%></td>
+                  <td><%=reportEle.percentage%>%</td>
               </tr>
               <% idx++ %>
           <% } %>
-          <% totalCosts = totalCosts.toFixed(2) %>
-        
-        <tr>
           <td scope="row">/</th>
           <td>Total Spending</td>
-          <td>-</td>
           <td><%=totalCosts%></td>
           <td>100%</td>
-        </tr>
-      
-      </tbody>
-    </table>  
-<%  } %>
 
+      </tbody>
+    </table>
+
+
+  <!-- show report based on month and year -->
+  <div class="header">
+    <h2 class="text">Show a Month Report</h2>
+  </div>
+  <form action="/expenses/show-month-report" method="POST">
+    <input name="date" type="month">
+    <button>Show Report</button>
+  </form>
+
+  <% if(typeof reported_expenses !== 'undefined') {%>
+      <table class="expenses-table">
+        <thead>
+          <tr>
+            <th scope="col">Number</th>
+            <th scope="col">Type</th>
+            <th scope="col">Date</th>
+            <th scope="col">Cost ($)</th>
+            <th scope="col">Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+            <%idx = 1 %>
+            <% totalCosts = 0 %>
+            
+            <!-- find the totalCosts -->
+            <% for(let expense of reported_expenses){ %>
+                <% totalCosts+=Number(expense.cost) %>
+            <% } %>
+            
+            <% for(let expense of reported_expenses){ %>
+              <%expense.date = new Date(expense.date);%>
+                <tr>
+                    <td scope="row"><%=idx%></th>
+                    <td><%=expense.type%></td>
+                    <td><%=expense.date.getMonth()+1%>-<%=expense.date.getFullYear()%></td>
+                    <td><%=expense.cost.toFixed(2)%></td>
+                    <td> <%=((expense.cost*100)/totalCosts).toFixed(2)%>%</td>
+                </tr>
+                <% idx++ %>
+            <% } %>
+            <% totalCosts = totalCosts.toFixed(2) %>
+          
+          <tr>
+            <td scope="row">/</th>
+            <td>Total Spending</td>
+            <td>-</td>
+            <td><%=totalCosts%></td>
+            <td>100%</td>
+          </tr>
+        
+        </tbody>
+      </table>  
+  <%  } %>
+
+</div>
 
 
