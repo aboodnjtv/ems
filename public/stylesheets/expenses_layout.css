@@ -5,6 +5,7 @@ body{
 }
 .expenses_container{
     /* justify-self: center; */
+    margin-left: 20px;
 }
 
 .header{
