@@ -3,19 +3,18 @@
     width: 80vw;
     height: 105px;
     display: flex;
-    justify-content: left;
-    /* align-items: center; */
-    /* border-radius: 15px; */
-    /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); */
-
+    justify-content: flex-start;
 
 }
 .expenses-form-container .form-row{
     display: flex;
     justify-content: space-evenly;
+    justify-content: flex-start;
+    gap: 50px;
     align-items: center;
     height: 100%;
     width: 100%;
+
 }
 .expenses-form-container form {
     width: 80%; /* Make the form take full width */
