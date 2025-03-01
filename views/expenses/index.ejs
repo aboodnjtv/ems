@@ -116,10 +116,15 @@
   <div class="header">
     <h2 class="text">Show a Month Report</h2>
   </div>
-  <form action="/expenses/show-month-report" method="POST">
-    <input name="date" type="month">
-    <button>Show Report</button>
-  </form>
+
+  <div class="expenses-form-container">
+    <form action="/expenses/show-month-report" method="POST">
+      <div class="form-row">
+        <input name="date" type="month">
+        <button>Show Report</button>
+      </div>
+    </form>
+  </div>
 
   <% if(typeof reported_expenses !== 'undefined') {%>
       <table class="expenses-table">
