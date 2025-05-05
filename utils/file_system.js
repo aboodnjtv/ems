@@ -43,21 +43,22 @@ function create_expenses_table_header(file_content){
 
 // adds all expenses to file content
 function add_expenses(expenses,file_content){
-    for(let expense of expenses){
+    // for(let expense of expenses){
+    for(let i = 0 ;i<expenses.length;i++){
         let expense_data="";
-        expense_data+=expense.name+",";
-        expense_data+=expense.type+",";
-        expense_data+=expense.cost+",";
-        expense_data+=expense.date+",";
-        expense_data+=expense.month+",";
-        expense_data+=expense.year+",";
-        expense_data+=expense.saved;
+        expense_data+=expenses[i].name+",";
+        expense_data+=expenses[i].type+",";
+        expense_data+=expenses[i].cost+",";
+        expense_data+=expenses[i].date+",";
+        expense_data+=expenses[i].month+",";
+        expense_data+=expenses[i].year+",";
+        expense_data+=expenses[i].saved;
         //adding a new line
-        expense_data+="\n"
+        if(i !== expenses.length-1)
+          expense_data+="\n"
         file_content.push(expense_data);
     }
 }
-
 
 
 function extract_expenses(file_content){
