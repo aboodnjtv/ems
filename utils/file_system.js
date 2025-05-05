@@ -71,7 +71,7 @@ function extract_expenses(file_content){
     const expense_as_object = {
       name:expnese_data[0],
       type:expnese_data[1],
-      cost:expnese_data[2],
+      cost:Number(expnese_data[2]) || 0,// getting cost as a Number and not a String
       date:expnese_data[3],
       month:expnese_data[4],
       year:expnese_data[5],
@@ -116,6 +116,8 @@ module.exports.get_expenses_from_file = async function (file_path) {
     console.log(file_content)
     // extract the expenses and return them as a list
     extracted_expenses = extract_expenses(file_content);
+    // when we upload the file, it goes to public/expenses_uploads/expenses.csv
+    // we don't want to keep it there, so we delete it after we parse it
     delete_expenses_csv_file('public/expenses_uploads/expenses.csv')
     return extracted_expenses;
 
