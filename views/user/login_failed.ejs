@@ -1,0 +1,48 @@
+<% layout("layouts/boilerplate")%>
+
+
+<div class="login_failed_container">
+
+    <div class="contents">
+        <h1>Email or password is incorrect</h1>
+        <a href="/login"><button class="btn save">Try Again</button></a>
+        <a href="/signup"><button class="btn save">Create a New Account</button></a>
+    </div>
+</div>
+
+
+<style>
+
+    .login_failed_container{
+        display: flex;
+        height: 80vh;
+
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    .login_failed_container .contents{
+        display: flex;
+        flex-direction: column;
+        height: 30vh;
+        border: 3px solid rgb(235, 245, 235);
+        padding: 50px;
+        justify-content: space-evenly;
+
+
+    }
+
+    .login_failed_container .contents a{
+        display: flex;
+        text-decoration: none;
+
+    }
+    .login_failed_container .contents a button{
+        flex: 1;
+    }
+
+
+
+
+</style>

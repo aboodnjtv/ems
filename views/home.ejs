@@ -11,12 +11,28 @@
 <div class="content">
   <h2>OUR SERVICES</h2>
   <ul class="services">
-    <li><a href="/items">All Items</a></li>
     <li><a href="/items/new">Cost of Making</a></li>
     <li><a href="/services/cost_per_pound">Find Cost Per Pound ($/LB)</a></li>
     <li><a href="/services/compare_two_products">Compare Two Products</a></li>
     <li><a href="/services/wheatgrass_seeds_needed">Wheatgrass Seeds Needed</a></li>
   </ul>
+
+
+  <% if(currentUser) {%>
+    <ul class="services">
+      <li><a href="/items">All Items</a></li>
+      <li><a href="/items/new">Add new item</a></li>
+      <li><a href="/ingredients">All Ingredients</a></li>
+      <li><a href="/ingredients/new">Add Ingredient</a></li>
+
+      <li class="nav-item">
+            <form action="/items/update" method="POST">
+              <button class="btn btn-outline-info">Update Costs</button>
+            </form>
+      </li>
+      
+    </ul>
+  <% } %>
 </div>
 
 
