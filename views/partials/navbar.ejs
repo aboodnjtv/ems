@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">EMS </a>
@@ -28,24 +29,12 @@
       <!-- middle -->
       <ul class="navbar-nav mx-auto">
         <% if(currentUser){ %> 
-        <li class="nav-item">
-          <a class="nav-link" href="/items">All Items</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/items/new">Add Item</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/ingredients">All Ingredients</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/ingredients/new">Add Ingredient</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/expenses">Expenses</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/expenses/settings">Settings</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/expenses">Expenses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/expenses/settings">Settings</a>
+          </li>
         <% } %>
       </ul>
        
@@ -67,25 +56,22 @@
             <a class="nav-link" href="/profile">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
+            <a style="color: orange;" class="nav-link" href="/logout">Logout</a>
           </li>
     
-          <li class="nav-item">
-            <form action="/items/update" method="POST">
-              <button class="btn btn-outline-info">Update Costs</button>
-            </form>
-          </li>
         <% } %> 
       </ul>
     </div>
   </div>
 </nav>
-
 <!-- bootstrap script for navbar -->
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
   crossorigin="anonymous"
 ></script>
+
+
+
 
 

@@ -22,14 +22,15 @@ router.get("/login",isLoggedOut,(req,res)=>{
 router.post("/login",isLoggedOut,catchAsync(async(req,res)=>{
     const {email,password} = req.body;
     const foundUser = await User.findOne({email});
-    if(!foundUser) return res.send("EMAIL OR PASSWORD IS INCORRECT");
+    // if(!foundUser) return res.send("EMAIL OR PASSWORD IS INCORRECT");
+    if(!foundUser) return res.render("user/login_failed");
     const correctPassword = await bcrypt.compare(password,foundUser.password);
-    if(!correctPassword) return res.send("EMAIL OR PASSWORD IS INCORRECT");
+    if(!correctPassword) return res.render("user/login_failed");
     // update last login for the user
     await User.findOneAndUpdate({email},{last_login: Date.now()});
     // console.log(`Date.now(): ${Date.now()}`)
     req.session.user = foundUser;
-    res.redirect("/items");
+    res.redirect("/expenses");
 
 }));
 
