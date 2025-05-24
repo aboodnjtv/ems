@@ -22,10 +22,10 @@ router.get("/login",isLoggedOut,(req,res)=>{
 router.post("/login",isLoggedOut,catchAsync(async(req,res)=>{
     const {email,password} = req.body;
     const foundUser = await User.findOne({email});
-    // if(!foundUser) return res.send("EMAIL OR PASSWORD IS INCORRECT");
-    if(!foundUser) return res.render("user/login_failed");
+    const errorMessage = "Email or password is incorrect.";
+    if(!foundUser) return res.render("user/auth-error",{errorMessage});
     const correctPassword = await bcrypt.compare(password,foundUser.password);
-    if(!correctPassword) return res.render("user/login_failed");
+    if(!correctPassword) return res.render("user/auth-error",{errorMessage});
     // update last login for the user
     await User.findOneAndUpdate({email},{last_login: Date.now()});
     // console.log(`Date.now(): ${Date.now()}`)
@@ -45,9 +45,13 @@ router.get("/signup",isLoggedOut,(req,res)=>{
     res.render("user/signup");
 });
 router.post("/signup", isLoggedOut,catchAsync(async(req,res)=>{
-    const {name,email,password} = req.body;
+    const {firstname,lastname,email,password} = req.body;
+    if(await User.findOne({email})){
+        const errorMessage = "An account with this email already exists.";
+        return res.render("user/auth-error",{errorMessage});
+    }
     const hashedPassword =  await bcrypt.hash(password,12);
-    const newUser = new User({name, email, password:hashedPassword,date_joined: new Date(),last_login: new Date()}); 
+    const newUser = new User({firstname,lastname, email, password:hashedPassword,date_joined: new Date(),last_login: new Date()}); 
     await newUser.save();
     // send the OTP that will be user to verify the email
     await sendOpt(email);
