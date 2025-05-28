@@ -107,4 +107,23 @@ router.get("/profile",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
 
 
 
+
+// Route to edit first and last name
+router.get("/user/edit-name",isLoggedIn,isVerified,(req,res)=>{
+    res.render("user/edit-name");
+})
+
+router.post("/user/edit-name",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
+    const{firstname,lastname} = req.body;
+    if(firstname && lastname){
+        await User.findByIdAndUpdate(req.session.user._id,{firstname,lastname});
+        // also update req.session.user which will updated currentUser
+        req.session.user.firstname = firstname; 
+        req.session.user.lastname = lastname; 
+    }
+    res.redirect("/profile");
+}))
+
+
+
 module.exports = router;
