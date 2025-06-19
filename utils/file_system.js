@@ -111,15 +111,13 @@ module.exports.download_expenses = async function (expenses) {
 
 //returns a list of expenses from the csv file
 module.exports.get_expenses_from_file = async function (file_path) {
-    //***find a way to get the file path without hard coding it
     // read file content and store them
     const file_content = await fs.readFile(file_path,"utf-8");
-    console.log(file_content)
     // extract the expenses and return them as a list
     extracted_expenses = extract_expenses(file_content);
-    // when we upload the file, it goes to public/expenses_uploads/expenses.csv
+    // when we upload the file, it goes to public/expenses_uploads
     // we don't want to keep it there, so we delete it after we parse it
-    delete_expenses_csv_file('public/expenses_uploads/expenses.csv')
+    delete_expenses_csv_file(file_path)
     return extracted_expenses;
 
 };

@@ -82,6 +82,8 @@ router.post("/expensesSettings/download-expenses",isLoggedIn,isVerified,catchAsy
 
 // upload expenses
 router.post("/expensesSettings/upload-expenses",isLoggedIn,isVerified,upload.single("csv_file"),catchAsync(async(req,res)=>{
+    
+    // this is the path of the uploaded file, set up in file_system file
     const file_path = `${req.file.destination}/${req.file.originalname}`;
     const extracted_expenses = await get_expenses_from_file(file_path);
     await Expense.deleteMany({author:req.session.user});
