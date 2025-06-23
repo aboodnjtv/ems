@@ -5,7 +5,7 @@ const ExpenseType = require("../models/expenseType");
 const Expense = require("../models/expense");
 const MonthlyExpense = require("../models/monthlyExpense");
 
-const {download_expenses,get_expenses_from_file,upload} = require("../utils/file_system")
+const {get_expenses_as_csv,get_expenses_from_file,upload} = require("../utils/file_system")
 const {create_new_expense} = require("../utils/expensesFuncs")
 
 //middlewares
@@ -74,10 +74,17 @@ router.post("/expensesSettings/delete-monthly-expense/:id",isLoggedIn,isVerified
 }));
 
 
+// an API that will download the expenses as CSV file
 router.post("/expensesSettings/download-expenses",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
     const expenses = await Expense.find({author:req.session.user});
-    await download_expenses(expenses);
-    res.redirect("/expenses/settings");
+    const expenses_as_csv =  await get_expenses_as_csv(expenses);
+    // set headers 
+    // Set headers for CSV download
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="expenses.csv"');
+    // Send the file content as the response
+    res.send(expenses_as_csv.join('')); // Join lines for CSV formatting
+    
 }));
 
 // upload expenses
