@@ -101,12 +101,12 @@ function delete_expenses_csv_file(path){
 
 // exported functions
 
-// downloads all expenses
-module.exports.download_expenses = async function (expenses) {
+// return a CSV file with all user's expenses
+module.exports.get_expenses_as_csv = async function (expenses) {
     const file_content = [];
     create_expenses_table_header(file_content);
-    add_expenses(expenses,file_content)
-    await fs.writeFile(`${homeDir}/Desktop/expenses.csv`,file_content);
+    add_expenses(expenses,file_content);
+    return file_content;
 };
 
 //returns a list of expenses from the csv file
