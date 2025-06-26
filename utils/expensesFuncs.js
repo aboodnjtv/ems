@@ -30,7 +30,7 @@ async function create_new_saved_expense_from_unsaved_expense(unsaved_expense){
     const newSavedExpense = new Expense({
         name: "saved",
         type : unsaved_expense.type,
-        cost : unsaved_expense.cost,
+        cost : (unsaved_expense.cost).toFixed(2),
         date : unsaved_expense.date,
         month : unsaved_expense.month,
         year : unsaved_expense.year,
@@ -73,7 +73,7 @@ async function create_new_unsaved_expense(name,type,cost,date,month,year,userId)
 
 // updates the savedExpense by adding the cost of the unsaved expense
 async function update_saved_expense_cost(savedExpense,unsaved_expense){
-    const updatedCost = savedExpense.cost + unsaved_expense.cost; 
+    const updatedCost = (savedExpense.cost + unsaved_expense.cost).toFixed(2); 
     await Expense.updateOne({_id:savedExpense._id},{
         cost:updatedCost
     })
@@ -194,7 +194,9 @@ module.exports.add_unsaved_expense = async function (name,type,cost,date,userId)
         date = new Date(`${date.getFullYear()}, ${date.getMonth()+1}, ${day}`);
     }
     const month = date.getMonth()+1;  
-    const year = date.getFullYear();  
+    const year = date.getFullYear();
+    // cast cost to Number   
+    cost = Number(cost).toFixed(2);
     await create_new_unsaved_expense(name,type,cost,date,month,year,userId);
 };
 
