@@ -1,0 +1,87 @@
+  <% layout("layouts/boilerplate")%>
+
+
+
+
+<head>
+  <!-- Add Font Awesome CDN for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<div class="settings-body">
+
+<%- include("../../partials/settings/settings-sidebar") %> 
+
+  <div class="main">
+    
+    <div class="header">
+        <h2 class="text">Add Monthly Expense</h2>
+    </div>
+
+
+    <div class="expenses-form-container">
+      <form action="/expensesSettings/add-monthly-expense" method="POST">
+        <div class="form-row">
+
+          <input name="name" id="name" type="text" placeholder="Expense Name">
+
+          <label for="type">Category</label>
+          <select name="type" id="type">
+            <!-- default expense types -->
+            <option value="GROCERY">GROCERY</option>
+            <option value="GAS">GAS</option>
+            <option value="RENT">RENT</option>
+            <!-- user-defined expense types -->
+            <% for(const expenseType of expenseTypes){%>
+              <option value="<%=expenseType.type%>"><%=expenseType.type%></option>
+            <% } %>
+        
+          </select>
+        
+          <label for="cost">Cost ($)</label>
+          <input name="cost" id="cost" type="number"  min="0" value="0" step="any">
+        
+          <button type="submit" class="btn btn-primary mb-2">Add Expense</button>
+        </div>
+      </form>
+    </div>
+
+    
+
+    
+    <table class="expenses-table">
+      <thead>
+        <tr>
+          <th scope="col">Number</th>
+          <th scope="col">Name</th>
+          <th scope="col">Type</th>
+          <th scope="col">Date Added</th>
+          <th scope="col">Cost ($)</th>
+          <th scope="col">Delete Option</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+          <% idx = 1 %>
+          <% for(let monthlyExpense of monthlyExpenses){ %>
+              <tr>
+                  <td scope="row"><%=idx%></th>
+                  <td><%=monthlyExpense.name %></td>
+                  <td><%=monthlyExpense.type%></td>
+                  <td><%=monthlyExpense.date.getMonth()+1%>-<%=monthlyExpense.date.getDate()%>-<%=monthlyExpense.date.getFullYear()%></td>
+                  <td><%=monthlyExpense.cost%></td>
+                  <td> 
+                    <form action="/expensesSettings/delete-monthly-expense/<%=monthlyExpense._id%>" method="POST">
+                      <button class="btn delete">Delete</button>
+                    </form>
+                  </td>
+              </tr>
+              <% idx++ %>
+          <% } %>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+    

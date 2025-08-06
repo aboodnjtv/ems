@@ -28,9 +28,13 @@
 .section-item{
     font-size: 14px;
     font-weight: 400;
-    color: #55585f;
     padding: 4px;
     border-radius: 5px;
+}
+.section-item > a{
+    color: #55585f;
+    text-decoration: none;
+    
 }
 .section-item:hover{
     background-color: rgb(234, 238, 242);
