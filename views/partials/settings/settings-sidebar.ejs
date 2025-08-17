@@ -1,0 +1,31 @@
+<aside class="sidebar">
+  <section class="sidebar-section">
+    <h2 class="section-title">Data Management</h2>
+    <a href="/expenses/settings/add-expense-category"><div class="section-item">Add Expense Category</div></a>
+    <a href="/expenses/settings/add-monthly-expense"><div class="section-item">Add Monthly Expense</div></a>
+  </section>
+
+  <section class="sidebar-section">
+    <h2 class="section-title">Data Security</h2>
+    <div class="section-item">
+      <form action="/expensesSettings/download-expenses" method="POST">
+        <button id="download-expenses-button">
+          <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+          Download Expenses as CSV file
+        </button>
+      </form>
+    </div>
+    <div class="section-item">
+      <i class="fas fa-upload"></i> Upload Expense from a CSV file
+      <form action="/expensesSettings/upload-expenses" method="POST" enctype="multipart/form-data">
+        <div class="expenses-upload-form">
+          <label class="upload-btn">
+            <input type="file" name="csv_file" hidden>
+            <span>📁 Upload File</span>
+          </label>
+          <button>Upload</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</aside>

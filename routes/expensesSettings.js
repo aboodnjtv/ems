@@ -14,10 +14,25 @@ const {isLoggedIn,isVerified} = require("../utils/middleware");
 const {catchAsync} = require("../utils/catchAsync");
 
 router.get("/expenses/settings",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
-    const expenseTypes = await ExpenseType.find({author: req.session.user});
-    const monthlyExpenses = await MonthlyExpense.find({author: req.session.user});
-    res.render("./expenses/settings",{expenseTypes,monthlyExpenses});
+    // const expenseTypes = await ExpenseType.find({author: req.session.user});
+    // const monthlyExpenses = await MonthlyExpense.find({author: req.session.user});
+    // res.render("./expenses/settings",{expenseTypes,monthlyExpenses});
+    res.redirect("/expenses/settings/add-expense-category");
 }));
+
+
+router.get("/expenses/settings/add-expense-category",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
+    const expenseTypes = await ExpenseType.find({author: req.session.user});
+    res.render("./expenses/settings/add-expense-category",{expenseTypes});
+}));
+
+router.get("/expenses/settings/add-monthly-expense",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
+    const monthlyExpenses = await MonthlyExpense.find({author: req.session.user});
+    const expenseTypes = await ExpenseType.find({author: req.session.user});
+    res.render("./expenses/settings/add-monthly-expense",{expenseTypes,monthlyExpenses});
+}));
+
+
 
 // add new expense type
 router.post("/expenses/settings/addtype",isLoggedIn,isVerified,catchAsync(async(req,res)=>{
@@ -61,7 +76,7 @@ router.post("/expensesSettings/add-monthly-expense", isLoggedIn,isVerified, catc
     })
 
     await newMonthlyExpense.save();
-    res.redirect("/expenses/settings");
+    res.redirect("/expenses/settings/add-monthly-expense");
 
 }));
 
@@ -69,7 +84,8 @@ router.post("/expensesSettings/add-monthly-expense", isLoggedIn,isVerified, catc
 router.post("/expensesSettings/delete-monthly-expense/:id",isLoggedIn,isVerified, catchAsync(async(req,res)=>{
     const{id} = req.params;
     await MonthlyExpense.findByIdAndDelete(id);
-    res.redirect("/expenses/settings");
+    res.redirect("/expenses/settings/add-monthly-expense");
+
 
 }));
 
